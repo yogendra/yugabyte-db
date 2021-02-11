@@ -16,7 +16,7 @@ interface UpdateReleaseProps {
   visible: boolean,
   releaseInfo: {
     version: string,
-  },  
+  },
   actionType: ReleaseStateEnum,
   onHide(): void,
   updateYugaByteRelease(value: string, state: object): void,
@@ -52,8 +52,10 @@ export default class UpdateRelease extends Component<UpdateReleaseProps> {
       default:
         modalTitle = 'Update Release ' + releaseInfo.version;
     }
+
     return (
       <div className="universe-apps-modal">
+        {/* @ts-ignore */}
         <YBModalForm
           title={modalTitle}
           visible={visible}

@@ -139,7 +139,7 @@ class StorageConfiguration extends Component {
             'IAM_INSTANCE_PROFILE'
           ]);
         } else {
-           dataPayload = _.pick(dataPayload, [
+          dataPayload = _.pick(dataPayload, [
             'AWS_ACCESS_KEY_ID',
             'AWS_SECRET_ACCESS_KEY',
             'BACKUP_LOCATION',

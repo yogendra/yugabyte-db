@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import NavBarContainer from '../components/common/nav_bar/NavBarContainer';
-import { Footer } from '../components/common/footer';
+import Footer from '../components/common/footer';
 import AuthenticatedComponentContainer from '../components/Authenticated/AuthenticatedComponentContainer';
 import { mouseTrap } from 'react-mousetrap';
 import { browserHistory } from 'react-router';
@@ -89,12 +89,12 @@ class AuthenticatedComponent extends Component {
         <YBCheckBox
           label={'Do not show this message in the future'}
           onClick={() => this.setState({ hideDialogChecked: true })}
-        ></YBCheckBox>
+        />
       </div>
     );
     const welcomeDialogTitle = (
       <div>
-        Welcome to 
+        Welcome to
         <img alt="YugaByte DB logo"
           className="social-media-logo"
           src={ybLogo}
@@ -194,7 +194,7 @@ class AuthenticatedComponent extends Component {
                 rel="noopener noreferrer"
               >
                 <img alt="T-Shirt" src={tshirtImage} width="20" />
-                <span>Get a Free t-shirt</span> 
+                <span>Get a Free t-shirt</span>
               </a>
               <a
                 className="social-media-btn"
@@ -203,7 +203,7 @@ class AuthenticatedComponent extends Component {
                 rel="noopener noreferrer"
               >
                 <i className="fa fa-search" />
-                <span>Read docs</span>                
+                <span>Read docs</span>
               </a>
             </div>
           </YBModal>

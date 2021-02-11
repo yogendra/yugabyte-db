@@ -22,7 +22,7 @@ import _ from 'lodash';
 export default class NodeDetails extends Component {
   componentDidMount() {
     const {
-      universe: { currentUniverse }
+      universe: { currentUniverse, universePerNodeStatus }
     } = this.props;
     if (getPromiseState(currentUniverse).isSuccess()) {
       const uuid = currentUniverse.data.universeUUID;

@@ -8,51 +8,51 @@ import { YBLabel, DescriptionItem } from '../../../../components/common/descript
 import 'react-toggle/style.css';
 import './stylesheets/YBToggle.scss';
 
-export default class YBToggle extends Component {
-  render() {
-    const {
-      input,
-      label,
-      onToggle,
-      isReadOnly,
-      meta,
-      insetError,
-      subLabel,
-      infoContent,
-      infoTitle,
-      checkedVal,
-      name
-    } = this.props;
-    const onChange = (event) => {
-      if (!this.props.disableOnChange) {
-        input.onChange(event);
-        if (isValidObject(onToggle)) onToggle(event);
-      }
-    };
-
-    // TODO: Investigate separating this into a Controlled and Uncontrolled component. This is
-    // currently a Controlled component, but relies on Redux Form in places, thus it accesses the
-    // underlying input.value.
-    return (
-      <YBLabel
-        label={label}
-        meta={meta}
-        insetError={insetError}
-        infoContent={infoContent}
-        infoTitle={infoTitle}
-      >
-        <DescriptionItem title={subLabel}>
-          <Toggle
-            checked={!!input.value && checkedVal}
-            name={name}
-            className="yb-toggle"
-            onChange={onChange}
-            disabled={isReadOnly}
-          />
-        </DescriptionItem>
-      </YBLabel>
-    );
+const YBToggle = (
+  {
+    input,
+    label,
+    onToggle,
+    isReadOnly,
+    meta,
+    insetError,
+    subLabel,
+    infoContent,
+    infoTitle,
+    checkedVal,
+    name
   }
+) =>{
+
+  const onChange = (event) => {
+    if (!this.props.disableOnChange) {
+      input.onChange(event);
+      if (isValidObject(onToggle)) onToggle(event);
+    }
+  };
+
+  // TODO: Investigate separating this into a Controlled and Uncontrolled component. This is
+  // currently a Controlled component, but relies on Redux Form in places, thus it accesses the
+  // underlying input.value.
+  return (
+    <YBLabel
+      label={label}
+      meta={meta}
+      insetError={insetError}
+      infoContent={infoContent}
+      infoTitle={infoTitle}
+    >
+      <DescriptionItem title={subLabel}>
+        <Toggle
+          checked={!!input.value && checkedVal}
+          name={name}
+          className="yb-toggle"
+          onChange={onChange}
+          disabled={isReadOnly}
+        />
+      </DescriptionItem>
+    </YBLabel>
+  );
 }
 
 YBToggle.propTypes = {
@@ -64,3 +64,5 @@ YBToggle.defaultProps = {
   checkedVal: true,
   disableOnChange: false
 };
+
+export default YBToggle;

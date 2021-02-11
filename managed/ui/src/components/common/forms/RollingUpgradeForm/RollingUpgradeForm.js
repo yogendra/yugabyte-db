@@ -1,7 +1,7 @@
 // Copyright (c) YugaByte, Inc.
 
 import _ from 'lodash';
-import React, { Component } from 'react';
+import React, {Component, useEffect} from 'react';
 import { Field, FieldArray } from 'redux-form';
 import { Row, Col, Tabs, Tab, Alert } from 'react-bootstrap';
 import {
@@ -19,55 +19,49 @@ import { getPrimaryCluster } from '../../../../utils/UniverseUtils';
 import { isDefinedNotNull, isNonEmptyObject } from '../../../../utils/ObjectUtils';
 import './RollingUpgradeForm.scss';
 
-class FlagInput extends Component {
-  render() {
-    const { deleteRow, item } = this.props;
-    return (
-      <Row>
-        <Col lg={5}>
-          <Field
-            name={`${item}.name`}
-            component={YBInputField}
-            className="input-sm"
-            placeHolder="Flag Name"
-          />
-        </Col>
-        <Col lg={5}>
-          <Field
-            name={`${item}.value`}
-            component={YBInputField}
-            className="input-sm"
-            placeHolder="Value"
-          />
-        </Col>
-        <Col lg={1}>
-          <i className="fa fa-times fa-fw delete-row-btn" onClick={deleteRow} />
-        </Col>
-      </Row>
-    );
-  }
+const FlagInput = ({ deleteRow, item }) => {
+  return (
+    <Row>
+      <Col lg={5}>
+        <Field
+          name={`${item}.name`}
+          component={YBInputField}
+          className="input-sm"
+          placeHolder="Flag Name"
+        />
+      </Col>
+      <Col lg={5}>
+        <Field
+          name={`${item}.value`}
+          component={YBInputField}
+          className="input-sm"
+          placeHolder="Value"
+        />
+      </Col>
+      <Col lg={1}>
+        <i className="fa fa-times fa-fw delete-row-btn" onClick={deleteRow} />
+      </Col>
+    </Row>
+  );
 }
 
-class FlagItems extends Component {
-  componentDidMount() {
-    if (this.props.fields.length === 0) {
-      this.props.fields.push({});
-    }
-  }
-  render() {
-    const { fields } = this.props;
-    const addFlagItem = () => fields.push({});
-    const gFlagsFieldList = fields.map((item, idx) => (
-      <FlagInput item={item} key={idx} deleteRow={() => fields.remove(idx)} />
-    ));
+const FlagItems = ({ fields }) => {
 
-    return (
-      <div className="form-field-grid">
-        {gFlagsFieldList}
-        <YBAddRowButton btnText="Add" onClick={addFlagItem} />
-      </div>
-    );
-  }
+  useEffect(() => {
+    fields.push({});
+  }, [])
+
+  const addFlagItem = () => fields.push({});
+  const gFlagsFieldList = fields.map((item, idx) => (
+    <FlagInput item={item} key={idx} deleteRow={() => fields.remove(idx)} />
+  ));
+
+  return (
+    <div className="form-field-grid">
+      {gFlagsFieldList}
+      <YBAddRowButton btnText="Add" onClick={addFlagItem} />
+    </div>
+  );
 }
 
 export default class RollingUpgradeForm extends Component {

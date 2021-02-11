@@ -1,17 +1,17 @@
 // Copyright (c) YugaByte, Inc.
 
-import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
-import { OnPremMachineTypes } from '../../../config';
-import { setOnPremConfigData } from '../../../../actions/cloud';
+import {connect} from 'react-redux';
+import {reduxForm} from 'redux-form';
+import {OnPremMachineTypes} from '../../../config';
+import {setOnPremConfigData} from '../../../../actions/cloud';
 import _ from 'lodash';
-import { isNonEmptyArray, isDefinedNotNull } from '../../../../utils/ObjectUtils';
+import {isDefinedNotNull, isNonEmptyArray} from '../../../../utils/ObjectUtils';
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     submitOnPremMachineTypes: (formData) => {
       const payloadObject = _.clone(ownProps.onPremJsonFormData);
-      const instanceTypesList = formData.machineTypeList.map(function (item) {
+      payloadObject.instanceTypes = formData.machineTypeList.map(function (item) {
         return {
           instanceTypeCode: item.code,
           numCores: item.numCores,
@@ -27,7 +27,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
           isBeingEdited: item.isBeingEdited
         };
       });
-      payloadObject.instanceTypes = instanceTypesList;
       dispatch(setOnPremConfigData(payloadObject));
       ownProps.nextPage();
     }

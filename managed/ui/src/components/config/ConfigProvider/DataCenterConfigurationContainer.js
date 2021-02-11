@@ -3,11 +3,11 @@
 import { connect } from 'react-redux';
 import { DataCenterConfiguration } from '../../config';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ customer, universe, cloud }) => {
   return {
-    customer: state.customer,
-    universe: state.universe,
-    cloud: state.cloud
+    customer,
+    universe,
+    cloud
   };
 };
 

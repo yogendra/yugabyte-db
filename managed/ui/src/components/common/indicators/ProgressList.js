@@ -1,22 +1,14 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { ListGroup, ListGroupItem } from 'react-bootstrap';
 import 'react-fa';
 
 import './stylesheets/ProgressList.css';
 
-export default class ProgressList extends Component {
-  static propTypes = {
-    items: PropTypes.array.isRequired
-  };
-
-  static defaultProps = {
-    type: 'None'
-  };
-
-  getIconByType(type) {
+const ProgressList = ({ items }) => {
+  const getIconByType = (type) => {
     if (type === 'Initializing') {
       return 'fa fa-clock-o';
     } else if (type === 'Success') {
@@ -29,17 +21,25 @@ export default class ProgressList extends Component {
     return null;
   }
 
-  render() {
-    const listItems = this.props.items.map(function (item, idx) {
-      const iconType = this.getIconByType(item.type);
-      return (
-        <ListGroupItem key={idx} bsClass="progress-list-item">
-          <i className={iconType}></i>
-          {item.name}
-        </ListGroupItem>
-      );
-    }, this);
+  const listItems = items.map(function (item, idx) {
+    const iconType = getIconByType(item.type);
+    return (
+      <ListGroupItem key={`${idx}${item.type}`} bsClass="progress-list-item">
+        <i className={iconType} />
+        {item.name}
+      </ListGroupItem>
+    );
+  }, this);
 
-    return <ListGroup bsClass="progress-list">{listItems}</ListGroup>;
-  }
+  return <ListGroup bsClass="progress-list">{listItems}</ListGroup>;
 }
+
+ProgressList.propTypes = {
+  items: PropTypes.array.isRequired
+};
+
+ProgressList.defaultProps = {
+  type: 'None'
+};
+
+export default ProgressList;

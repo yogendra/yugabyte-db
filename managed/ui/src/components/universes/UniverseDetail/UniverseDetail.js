@@ -478,16 +478,16 @@ class UniverseDetail extends Component {
                           currentCustomer.data.features,
                           'universes.details.overview.editUniverse'
                         ) && (
-                          <YBMenuItem
-                            to={`/universes/${uuid}/edit/primary`}
-                            availability={getFeatureState(
-                              currentCustomer.data.features,
-                              'universes.details.overview.editUniverse'
-                            )}
-                          >
-                            <YBLabelWithIcon icon="fa fa-pencil">Edit Universe</YBLabelWithIcon>
-                          </YBMenuItem>
-                        )}
+                        <YBMenuItem
+                          to={`/universes/${uuid}/edit/primary`}
+                          availability={getFeatureState(
+                            currentCustomer.data.features,
+                            'universes.details.overview.editUniverse'
+                          )}
+                        >
+                          <YBLabelWithIcon icon="fa fa-pencil">Edit Universe</YBLabelWithIcon>
+                        </YBMenuItem>
+                      )}
                       <YBMenuItem
                         onClick={showGFlagsModal}
                         availability={getFeatureState(

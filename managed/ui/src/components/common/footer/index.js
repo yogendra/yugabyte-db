@@ -1,3 +1,5 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as Footer } from './FooterContainer';
+import Footer from './FooterContainer';
+
+export default Footer;

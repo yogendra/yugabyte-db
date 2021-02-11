@@ -5,17 +5,17 @@ import PropTypes from 'prop-types';
 
 import YBLoadingCircleIcon from './YBLoadingCircleIcon';
 
-export default class YBLoading extends Component {
-  static propTypes = {
-    size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'inline'])
-  };
-
-  render() {
-    return (
-      <div className="text-center loading-icon-container">
-        <YBLoadingCircleIcon size={this.props.size} />
-        <div>Loading</div>
-      </div>
-    );
-  }
+const YBLoading = ({ size }) => {
+  return (
+    <div className="text-center loading-icon-container">
+      <YBLoadingCircleIcon size={size} />
+      <div>Loading</div>
+    </div>
+  );
 }
+
+YBLoading.propTypes = {
+  size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'inline'])
+};
+
+export default YBLoading;

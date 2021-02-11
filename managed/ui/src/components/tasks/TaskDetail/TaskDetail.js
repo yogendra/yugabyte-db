@@ -113,13 +113,13 @@ class TaskDetail extends Component {
           </div>
           {isNonEmptyString(currentTaskData.title)
            && currentTaskData.title.includes("Created Universe") &&
-            <div
-              className="btn btn-orange text-center pull-right task-detail-button"
-              onClick={() => self.retryTaskClicked(taskUUID)}
-            >
-              <i className="fa fa-refresh"></i>
+           <div
+             className="btn btn-orange text-center pull-right task-detail-button"
+             onClick={() => self.retryTaskClicked(taskUUID)}
+           >
+             <i className="fa fa-refresh"></i>
               Retry Task
-            </div>
+           </div>
           }
         </div>
       );

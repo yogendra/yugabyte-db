@@ -6,17 +6,17 @@ import { YBModal } from '../../../common/forms/fields';
 export const CertificateDetails = ({certificate, visible, onHide}) => {
   const certStart = certificate.creationTime
     ? new Date(certificate.creationTime).toLocaleDateString('default', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-      })
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    })
     : '';
   const certExpiry = certificate.expiryDate
     ? new Date(certificate.expiryDate).toLocaleDateString('default', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric'
-      })
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    })
     : '';
 
   return (

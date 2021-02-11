@@ -238,7 +238,7 @@ class AddRegionList extends Component {
                         name={`regionList[${regionIndex}].zoneList`}
                         render={(zoneArrayHelpers) => (
                           <Fragment>
-                            <div className="divider"></div>
+                            <div className="divider" />
                             <h5>Specify zones</h5>
                             <div className="form-field-grid">
                               {(!showZoneForm || currentRegion.zoneList.length > 1) && (
