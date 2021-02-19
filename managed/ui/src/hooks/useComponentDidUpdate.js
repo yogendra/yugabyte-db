@@ -11,6 +11,6 @@ export const useComponentDidUpdate = (effect, dependencies) => {
       }
       effect();
     },
-    dependencies
+    [effect, ...dependencies]
   );
 };

@@ -1,11 +1,9 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React from 'react';
 
-class Universes extends Component {
-  render() {
-    return <div>{this.props.children}</div>;
-  }
-}
+const Universes = ({ children }) => {
+  return <div>{children}</div>;
+};
 
 export default Universes;

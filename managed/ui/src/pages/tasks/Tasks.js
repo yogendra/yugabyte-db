@@ -1,9 +1,9 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React from 'react';
 
-export default class Tasks extends Component {
-  render() {
-    return <div className="dashboard-container">{this.props.children}</div>;
-  }
-}
+const Tasks = ({ children }) => {
+  return <div className="dashboard-container">{children}</div>;
+};
+
+export default Tasks;
