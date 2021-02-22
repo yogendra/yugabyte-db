@@ -165,14 +165,14 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ cloud, customer, universe, tasks, }) => {
   return {
-    cloud: state.cloud,
-    currentCustomer: state.customer.currentCustomer,
-    universe: state.universe,
-    tasks: state.tasks,
-    fetchMetadata: state.cloud.fetchMetadata,
-    fetchUniverseMetadata: state.universe.fetchUniverseMetadata
+    cloud: cloud,
+    currentCustomer: customer.currentCustomer,
+    universe: universe,
+    tasks: tasks,
+    fetchMetadata: cloud.fetchMetadata,
+    fetchUniverseMetadata: universe.fetchUniverseMetadata
   };
 };
 

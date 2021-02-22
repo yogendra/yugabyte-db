@@ -1,22 +1,24 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React from 'react';
 import './stylesheets/StepProgressBar.scss';
 
-export default class StepProgressBar extends Component {
-  isFailedIndex = (taskDetails) => {
+const StepProgressBar = ({
+  details: { taskDetails }
+}) => {
+  const isFailedIndex = (taskDetails) => {
     return taskDetails.findIndex((element) => {
       return element.state === 'Failure';
     });
   };
 
-  isRunningIndex = (taskDetails) => {
+  const isRunningIndex = (taskDetails) => {
     return taskDetails.findIndex((element) => {
       return element.state === 'Running';
     });
   };
 
-  normalizeTasks = (taskDetails) => {
+  const normalizeTasks = (taskDetails) => {
     const taskDetailsNormalized = [
       ...taskDetails,
       {
@@ -25,12 +27,12 @@ export default class StepProgressBar extends Component {
         title: 'Done'
       }
     ];
-    if (this.isFailedIndex(taskDetailsNormalized) > -1) {
-      for (let i = 0; i < this.isFailedIndex(taskDetailsNormalized); i++) {
+    if (isFailedIndex(taskDetailsNormalized) > -1) {
+      for (let i = 0; i < isFailedIndex(taskDetailsNormalized); i++) {
         taskDetailsNormalized[i].class = 'to-be-failed';
       }
-    } else if (this.isRunningIndex(taskDetailsNormalized) > -1) {
-      for (let i = 0; i < this.isRunningIndex(taskDetailsNormalized); i++) {
+    } else if (isRunningIndex(taskDetailsNormalized) > -1) {
+      for (let i = 0; i < isRunningIndex(taskDetailsNormalized); i++) {
         taskDetailsNormalized[i].class = 'to-be-succeed';
       }
     } else {
@@ -40,65 +42,63 @@ export default class StepProgressBar extends Component {
     return taskDetailsNormalized;
   };
 
-  render() {
-    const {
-      details: { taskDetails }
-    } = this.props.progressData;
-    let taskClassName = '';
-    const getTaskClass = function (type) {
-      if (type === 'Initializing' || type === 'Unknown') {
-        return 'pending';
-      } else if (type === 'Success') {
-        return 'finished';
-      } else if (type === 'Running') {
-        return 'running';
-      } else if (type === 'Failure') {
-        return 'failed';
-      }
-      return null;
-    };
 
-    const taskDetailsNormalized = this.normalizeTasks(taskDetails);
+  let taskClassName = '';
+  const getTaskClass = function (type) {
+    if (type === 'Initializing' || type === 'Unknown') {
+      return 'pending';
+    } else if (type === 'Success') {
+      return 'finished';
+    } else if (type === 'Running') {
+      return 'running';
+    } else if (type === 'Failure') {
+      return 'failed';
+    }
+    return null;
+  };
 
-    const tasksTotal = taskDetailsNormalized.length;
-    const taskIndex = taskDetailsNormalized.findIndex((element) => {
-      return element.state === 'Running' || element.state === 'Failure';
-    });
+  const taskDetailsNormalized = normalizeTasks(taskDetails);
 
-    const progressbarClass =
-      this.isFailedIndex(taskDetailsNormalized) > -1
-        ? 'failed'
-        : this.isRunningIndex(taskDetailsNormalized) > -1
-          ? 'running'
-          : 'finished';
-    const barWidth =
-      taskIndex === -1
-        ? '100%'
-        : (100 * (taskIndex + (this.isFailedIndex(taskDetailsNormalized) > -1 ? 0 : 0.5))) /
-            (tasksTotal - 1) +
-          '%';
+  const tasksTotal = taskDetailsNormalized.length;
+  const taskIndex = taskDetailsNormalized.findIndex((element) => {
+    return element.state === 'Running' || element.state === 'Failure';
+  });
 
-    const listLabels = taskDetailsNormalized.map(function (item, idx) {
-      taskClassName = getTaskClass(item.state);
-      return (
-        <li key={idx} className={taskClassName + ' ' + item.class}>
-          <span>{item.title}</span>
-        </li>
-      );
-    }, this);
+  const progressbarClass =
+    isFailedIndex(taskDetailsNormalized) > -1
+      ? 'failed'
+      : isRunningIndex(taskDetailsNormalized) > -1
+        ? 'running'
+        : 'finished';
+  const barWidth =
+    taskIndex === -1
+      ? '100%'
+      : (100 * (taskIndex + (isFailedIndex(taskDetailsNormalized) > -1 ? 0 : 0.5))) /
+          (tasksTotal - 1) +
+        '%';
+
+  const listLabels = taskDetailsNormalized.map(function (item, idx) {
+    taskClassName = getTaskClass(item.state);
     return (
-      <ul className="progressbar">
-        <div
-          className={
-            'progressbar-bar ' +
-            progressbarClass +
-            ' ' +
-            (taskIndex > -1 ? getTaskClass(taskDetailsNormalized[taskIndex].state) : '')
-          }
-          style={{ width: barWidth }}
-        ></div>
-        {listLabels}
-      </ul>
+      <li key={idx} className={taskClassName + ' ' + item.class}>
+        <span>{item.title}</span>
+      </li>
     );
-  }
+  }, this);
+  return (
+    <ul className="progressbar">
+      <div
+        className={
+          'progressbar-bar ' +
+          progressbarClass +
+          ' ' +
+          (taskIndex > -1 ? getTaskClass(taskDetailsNormalized[taskIndex].state) : '')
+        }
+        style={{ width: barWidth }}
+      />
+      {listLabels}
+    </ul>
+  );
 }
+
+export default StepProgressBar;

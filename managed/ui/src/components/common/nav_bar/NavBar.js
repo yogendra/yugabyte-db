@@ -5,13 +5,13 @@ import TopNavBar from './TopNavBar';
 import SideNavBar from './SideNavBar';
 import './stylesheets/NavBar.scss';
 
-export default class NavBar extends Component {
-  render() {
-    return (
-      <div className="yb-nav-bar">
-        <TopNavBar customer={this.props.customer} logoutProfile={this.props.logoutProfile} />
-        <SideNavBar customer={this.props.customer} />
-      </div>
-    );
-  }
-}
+const NavBar = ({ customer, logoutProfile }) => {
+  return (
+    <div className="yb-nav-bar">
+      <TopNavBar customer={customer} logoutProfile={logoutProfile} />
+      <SideNavBar customer={customer} />
+    </div>
+  );
+};
+
+export default NavBar;

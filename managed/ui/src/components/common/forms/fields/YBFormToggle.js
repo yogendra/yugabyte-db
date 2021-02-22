@@ -6,9 +6,9 @@ import { YBLabel, DescriptionItem } from '../../../../components/common/descript
 import 'react-toggle/style.css';
 import './stylesheets/YBToggle.scss';
 
-export default class YBFormToggle extends Component {
-  render() {
-    const {
+const YBFormToggle =
+  (
+    {
       label,
       isReadOnly,
       meta,
@@ -17,30 +17,33 @@ export default class YBFormToggle extends Component {
       infoContent,
       infoTitle,
       field
-    } = this.props;
-    const onChange = (event) => {
-      if (field.onChange) {
-        field.onChange(event);
-      }
-    };
-    return (
-      <YBLabel
-        label={label}
-        meta={meta}
-        insetError={insetError}
-        infoContent={infoContent}
-        infoTitle={infoTitle}
-      >
-        <DescriptionItem title={subLabel}>
-          <Toggle
-            checked={field.value}
-            name={field.name}
-            className="yb-toggle"
-            onChange={onChange}
-            disabled={isReadOnly}
-          />
-        </DescriptionItem>
-      </YBLabel>
-    );
-  }
+    }
+  ) => {
+
+  const onChange = (event) => {
+    if (field.onChange) {
+      field.onChange(event);
+    }
+  };
+  return (
+    <YBLabel
+      label={label}
+      meta={meta}
+      insetError={insetError}
+      infoContent={infoContent}
+      infoTitle={infoTitle}
+    >
+      <DescriptionItem title={subLabel}>
+        <Toggle
+          checked={field.value}
+          name={field.name}
+          className="yb-toggle"
+          onChange={onChange}
+          disabled={isReadOnly}
+        />
+      </DescriptionItem>
+    </YBLabel>
+  );
 }
+
+export default YBFormToggle

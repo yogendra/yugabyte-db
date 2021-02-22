@@ -1,7 +1,7 @@
 // Copyright (c) YugaByte, Inc.
 
 import { connect } from 'react-redux';
-import { AlertsList } from '../../alerts';
+import AlertsList from '../../alerts';
 import { getAlerts, getAlertsSuccess, getAlertsFailure } from '../../../actions/customers';
 
 const mapDispatchToProps = (dispatch) => {

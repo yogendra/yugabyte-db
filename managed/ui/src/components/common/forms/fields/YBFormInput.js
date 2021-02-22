@@ -5,19 +5,19 @@ import { YBLabel } from '../../../../components/common/descriptors';
 import { FormControl } from 'react-bootstrap';
 import { isDefinedNotNull } from '../../../../utils/ObjectUtils';
 
-export default class YBFormInput extends Component {
-  handleChange = (event) => {
-    const { field, onChange } = this.props;
+const YBFormInput = ({ field, onChange, ...rest }) => {
+  const handleChange = (event) => {
     field.onChange(event);
     if (isDefinedNotNull(onChange)) onChange(this.props, event);
   };
 
-  render() {
-    const { infoContent, ...rest } = this.props;
-    return (
-      <YBLabel {...this.props} infoContent={infoContent}>
-        <FormControl {...this.props.field} {...rest} onChange={this.handleChange} />
-      </YBLabel>
-    );
-  }
+  const { infoContent } = rest;
+  return (
+    <YBLabel {...rest} infoContent={infoContent}>
+      <FormControl {...field} {...rest} onChange={handleChange} />
+    </YBLabel>
+  );
 }
+
+
+export default YBFormInput
