@@ -12,7 +12,7 @@ import {useComponentDidUpdate} from "../../../../hooks/useComponentDidUpdate";
 
 const PROVIDER_TYPE = 'docker';
 
-const DockerProviderConfiguration = (
+export const DockerProviderConfiguration = withRouter((
   {
     handleSubmit,
     submitting,
@@ -166,7 +166,4 @@ const DockerProviderConfiguration = (
       </form>
     </div>
   );
-}
-
-
-export default withRouter(DockerProviderConfiguration);
+})

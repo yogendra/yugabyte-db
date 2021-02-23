@@ -2,13 +2,13 @@
 
 import React, { Component } from 'react';
 import { isValidObject } from '../../../utils/ObjectUtils';
+import {useComponentDidUpdate} from "../../../hooks/useComponentDidUpdate";
 
 const Plotly = require('plotly.js/lib/core');
 
-export default class UniverseReadWriteMetrics extends Component {
-  componentDidUpdate(prevProps) {
-    const { readData, writeData, graphIndex } = this.props;
-    const data = this.preparePlotlyData([
+export const UniverseReadWriteMetrics = ({ readData, writeData, graphIndex }) =>{
+  useComponentDidUpdate(() => {
+    const data = preparePlotlyData([
       {
         data: readData,
         color: '#4477dd'
@@ -59,9 +59,9 @@ export default class UniverseReadWriteMetrics extends Component {
       };
       Plotly.newPlot(`lineGraph${graphIndex}`, data, layout, { displayModeBar: false });
     }
-  }
+  }, [readData, writeData, graphIndex]);
 
-  preparePlotlyData(lines) {
+  const preparePlotlyData = (lines) => {
     const data = [];
     lines.forEach(function (line, index) {
       const plotName = index === 0 ? 'Read' : 'Write';
@@ -81,8 +81,5 @@ export default class UniverseReadWriteMetrics extends Component {
     return data;
   }
 
-  render() {
-    const { graphIndex } = this.props;
-    return <div id={`lineGraph${graphIndex}`} />;
-  }
+  return <div id={`lineGraph${graphIndex}`} />;
 }

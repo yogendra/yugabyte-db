@@ -1,10 +1,19 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as ReleaseList } from './ReleaseList/ReleaseList';
-export { default as ReleaseListContainer } from './ReleaseList/ReleaseListContainer';
+import { ReleaseList } from './ReleaseList/ReleaseList';
+import ReleaseListContainer from './ReleaseList/ReleaseListContainer';
 
-export { default as ImportRelease } from './ImportRelease/ImportRelease';
-export { default as ImportReleaseContainer } from './ImportRelease/ImportReleaseContainer';
+import { ImportRelease } from './ImportRelease/ImportRelease';
+import ImportReleaseContainer from './ImportRelease/ImportReleaseContainer';
 
-export { default as UpdateRelease } from './UpdateRelease/UpdateRelease';
-export { default as UpdateReleaseContainer } from './UpdateRelease/UpdateReleaseContainer';
+import { UpdateRelease } from './UpdateRelease/UpdateRelease';
+import UpdateReleaseContainer from './UpdateRelease/UpdateReleaseContainer';
+
+export  {
+  ReleaseList,
+  ReleaseListContainer,
+  ImportRelease,
+  ImportReleaseContainer,
+  UpdateRelease,
+  UpdateReleaseContainer,
+}

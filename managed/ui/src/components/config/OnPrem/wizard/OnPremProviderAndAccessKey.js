@@ -7,7 +7,7 @@ import { YBInputField, YBButton, YBTextArea, YBNumericInput } from '../../../com
 import constants from './OnPremWizardConstants.json';
 import YBToggle from '../../../common/forms/fields/YBToggle';
 
-const OnPremProviderAndAccessKey = ({ cancelEdit, initialValues, setOnPremProviderAndAccessKey, handleSubmit, switchToJsonEntry, isEditProvider }) => {
+export const OnPremProviderAndAccessKey = ({ cancelEdit, initialValues, setOnPremProviderAndAccessKey, handleSubmit, switchToJsonEntry, isEditProvider }) => {
   const [privateKeyFile, setPrivateKeyFile] = useState({});
   const [installNodeExporter, setInstallNodeExporter] = useState(initialValues.installNodeExporter);
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -180,5 +180,3 @@ const OnPremProviderAndAccessKey = ({ cancelEdit, initialValues, setOnPremProvid
     </div>
   );
 }
-
-export default OnPremProviderAndAccessKey

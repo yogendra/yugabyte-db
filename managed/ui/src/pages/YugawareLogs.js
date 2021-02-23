@@ -4,7 +4,7 @@ import React from 'react';
 
 import { YugawareLogsContainer } from '../components/yugaware_logs';
 
-const YugawareLogs = () => {
+export const YugawareLogs = () => {
   return (
     <div className="dashboard-container">
       <YugawareLogsContainer />

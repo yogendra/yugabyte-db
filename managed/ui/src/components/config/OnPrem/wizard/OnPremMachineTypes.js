@@ -112,7 +112,7 @@ export const OnPremListMachineTypes = ({ fields, isEditProvider }) => {
   );
 }
 
-const OnPremMachineTypes = ({ submitOnPremMachineTypes, handleSubmit, prevPage, cancelEdit, switchToJsonEntry, isEditProvider }) => {
+export const OnPremMachineTypes = ({ submitOnPremMachineTypes, handleSubmit, prevPage, cancelEdit, switchToJsonEntry, isEditProvider }) => {
   const submitOnPremForm = (values) => {
     submitOnPremMachineTypes(values);
   };
@@ -170,5 +170,3 @@ const OnPremMachineTypes = ({ submitOnPremMachineTypes, handleSubmit, prevPage, 
     </div>
   );
 }
-
-export default OnPremMachineTypes;

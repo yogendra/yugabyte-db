@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 
-import UniverseTable from './UniverseTable';
+import { UniverseTable } from './UniverseTable';
 import { fetchUniverseMetadata, resetUniverseTasks } from '../../../actions/universe';
 import {
   fetchCustomerTasks,

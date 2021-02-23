@@ -1,37 +1,23 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { isNonEmptyObject, isNonEmptyArray } from '../../../utils/ObjectUtils';
 import './MetricsPanel.scss';
 import Measure from 'react-measure';
 import _ from 'lodash';
 import { METRIC_FONT } from '../MetricsConfig';
+import {useComponentDidUpdate} from "../../../hooks/useComponentDidUpdate";
 
 const Plotly = require('plotly.js/lib/core');
 
-export default class MetricsPanelOverview extends Component {
-  static propTypes = {
-    metric: PropTypes.object.isRequired,
-    metricKey: PropTypes.string.isRequired
-  };
+export const MetricsPanelOverview = ({ metricKey, metric } ) =>{
+  const [graphMounted, setGraphMounted] = useState(false);
+  const [dimensions, setDimensions] = useState({});
+  const [layout, setLayout]= useState({});
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      graphMounted: false,
-      dimensions: {}
-    };
-  }
-
-  componentWillUnmount() {
-    const { metricKey } = this.props;
-    Plotly.purge(metricKey);
-  }
-
-  componentDidMount() {
-    const { metricKey } = this.props;
-    const metric = _.cloneDeep(this.props.metric);
+  useEffect(() => {
+    const metric = _.cloneDeep(metric);
     if (isNonEmptyObject(metric)) {
       // TODO: send this data from backend.
       let max = 0;
@@ -46,7 +32,7 @@ export default class MetricsPanelOverview extends Component {
       metric.layout.xaxis.hoverformat = '%H:%M:%S, %b %d, %Y';
       if (max === 0) max = 1.01;
       metric.layout.autosize = false;
-      metric.layout.width = this.state.dimensions.width || 300;
+      metric.layout.width = dimensions.width || 300;
       metric.layout.height = 145;
       metric.layout.title = '';
       metric.layout.showlegend = false;
@@ -114,14 +100,16 @@ export default class MetricsPanelOverview extends Component {
         };
       }
 
-      this.setState({ graphMounted: true, layout: metric.layout });
+      setGraphMounted(true);
+      setLayout(metric.layout)
       Plotly.newPlot(metricKey, metric.data, metric.layout, { displayModeBar: false });
     }
-  }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { metricKey } = this.props;
-    const metric = _.cloneDeep(this.props.metric);
+    return () => {Plotly.purge(metricKey)};
+  }, []);
+
+  useComponentDidUpdate(()=> {
+    const metric = _.cloneDeep(metric);
     let max = 0;
     if (isNonEmptyObject(metric)) {
       // TODO: send this data from backend.
@@ -141,23 +129,26 @@ export default class MetricsPanelOverview extends Component {
     Plotly.react(
       metricKey,
       metric.data,
-      { ...this.state.layout, yaxis: { range: [0, max] } },
+      { ...layout, yaxis: { range: [0, max] } },
       { displayModeBar: false }
     );
+  }, [])
+
+  const onResize = (dimensions) => {
+    setLayout({...layout, width: dimensions.width })
+    if (graphMounted) Plotly.relayout(metricKey, { width: dimensions.width });
   }
 
-  onResize(dimensions) {
-    this.setState({ layout: { ...this.state.layout, width: dimensions.width } });
-    if (this.state.graphMounted) Plotly.relayout(this.props.metricKey, { width: dimensions.width });
-  }
-
-  render() {
-    return (
-      <Measure onMeasure={this.onResize.bind(this)}>
-        <div id={this.props.metricKey} className="metrics-panel">
-          <div />
-        </div>
-      </Measure>
-    );
-  }
+  return (
+    <Measure onMeasure={onResize}>
+      <div id={metricKey} className="metrics-panel">
+        <div />
+      </div>
+    </Measure>
+  );
 }
+
+MetricsPanelOverview.propTypes = {
+  metric: PropTypes.object.isRequired,
+  metricKey: PropTypes.string.isRequired
+};

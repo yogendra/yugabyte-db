@@ -9,7 +9,7 @@ import {
 } from '../../../config';
 import { Row, Col } from 'react-bootstrap';
 
-const OnPremConfigWizard = (props) => {
+export const OnPremConfigWizard = (props) => {
   const [currentStep, setCurrentStep] = useState(0)
 
   const nextPage = () => {
@@ -78,5 +78,3 @@ export const OnPremStepper = ({ options, currentStep, children }) => {
     </div>
   );
 }
-
-export default OnPremConfigWizard;

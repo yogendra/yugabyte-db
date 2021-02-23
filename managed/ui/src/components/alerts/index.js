@@ -1,5 +1,5 @@
 // Copyright (c) YugaByte, Inc.
 
-import AlertsList from './AlertList/AlertsList';
+import { AlertsList } from './AlertList/AlertsList';
 
-export default AlertsList;
+export { AlertsList };

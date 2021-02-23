@@ -4,7 +4,7 @@ import React, { useState} from 'react';
 import PropTypes from 'prop-types';
 import copy from 'copy-to-clipboard';
 
-const YBCopyButton = ({ text, options, className, children }) => {
+export const YBCopyButton = ({ text, options, className, children }) => {
   const [clicked, setClicked] = useState(false);
 
   const onClick = (event) => {
@@ -37,5 +37,3 @@ YBCopyButton.propTypes = {
     message: PropTypes.string
   })
 };
-
-export default YBCopyButton;

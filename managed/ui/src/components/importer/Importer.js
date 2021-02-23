@@ -121,7 +121,7 @@ export default class Importer extends Component {
                   className={
                     'fa fa-' + (this.state.checks[section][check] === 'OK' ? 'check' : 'times')
                   }
-                ></i>
+                />
                 {((str) => str.charAt(0).toUpperCase() + str.slice(1))(
                   check.replace(/_/g, ' ').replace(/db/g, 'DB')
                 )}

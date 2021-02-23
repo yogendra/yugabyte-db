@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const YBPopover = ({ className, placement, positionTop, positionLeft, style, children }) => {
+export const YBPopover = ({ className, placement, positionTop, positionLeft, style, children }) => {
   return (
     <div
       className={`popover popover-${placement} ${className}`}
@@ -21,5 +21,3 @@ const YBPopover = ({ className, placement, positionTop, positionLeft, style, chi
 YBPopover.propTypes = {
   label: PropTypes.string
 };
-
-export default YBPopover;

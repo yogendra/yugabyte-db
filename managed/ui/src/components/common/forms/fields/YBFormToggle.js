@@ -6,7 +6,7 @@ import { YBLabel, DescriptionItem } from '../../../../components/common/descript
 import 'react-toggle/style.css';
 import './stylesheets/YBToggle.scss';
 
-const YBFormToggle =
+export const YBFormToggle =
   (
     {
       label,
@@ -45,5 +45,3 @@ const YBFormToggle =
     </YBLabel>
   );
 }
-
-export default YBFormToggle

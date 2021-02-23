@@ -7,7 +7,7 @@ import {
   fetchCustomerTasksSuccess,
   fetchCustomerTasksFailure
 } from '../../../actions/tasks';
-import UniverseForm from './UniverseForm';
+import { UniverseForm } from './UniverseForm';
 import {
   getInstanceTypeList,
   getRegionList,

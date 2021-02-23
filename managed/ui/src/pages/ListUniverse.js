@@ -3,7 +3,7 @@
 import React from 'react';
 import { ListUniverseContainer } from '../components/universes';
 
-const ListUniverse  = () => {
+export const ListUniverse  = () => {
   return (
     <div className="dashboard-container">
       <ListUniverseContainer />

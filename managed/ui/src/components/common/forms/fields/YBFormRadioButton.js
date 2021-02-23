@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const YBFormRadioButton = (
+export const YBFormRadioButton = (
   {
     field: { name, value, onChange, onBlur },
     id,
@@ -43,6 +43,3 @@ const YBFormRadioButton = (
     </label>
   );
 }
-
-
-export default  YBFormRadioButton;

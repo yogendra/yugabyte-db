@@ -3,7 +3,7 @@
 import React from 'react';
 import DashboardContainer from '../components/dashboard/DashboardContainer';
 
-const Dashboard = () => {
+export const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <DashboardContainer />

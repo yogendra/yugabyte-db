@@ -6,7 +6,7 @@ import { isFunction } from 'lodash';
 import { DescriptionItem, YBLabel } from '../../../../components/common/descriptors';
 import { isNonEmptyString } from '../../../../utils/ObjectUtils';
 
-const YBTextArea =
+export const YBTextArea =
 (
   {
     input,
@@ -72,5 +72,3 @@ const YBTextArea =
 YBTextArea.defaultProps = {
   isReadOnly: false
 };
-
-export default YBTextArea;

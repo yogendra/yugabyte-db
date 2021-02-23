@@ -2,7 +2,7 @@
 
 import React, {useEffect, useState} from 'react';
 import NavBarContainer from '../components/common/nav_bar/NavBarContainer';
-import Footer from '../components/common/footer';
+import { Footer } from '../components/common/footer';
 import AuthenticatedComponentContainer from '../components/Authenticated/AuthenticatedComponentContainer';
 import { mouseTrap } from 'react-mousetrap';
 import { browserHistory } from 'react-router';
@@ -14,7 +14,7 @@ import githubLogo from '../components/common/footer/images/github-light-small.pn
 import tshirtImage from '../components/common/footer/images/tshirt-yb.png';
 import ybLogo from '../components/common/YBLogo/images/yb_ybsymbol_dark.png';
 
-const AuthenticatedComponent = ({ bindShortcut, children }) => {
+export const AuthenticatedComponent = mouseTrap(({ bindShortcut, children }) => {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
   const [showIntroModal, setShowIntroModal] = useState(false);
   const [hideDialogChecked, setHideDialogChecked] = useState(false);
@@ -205,6 +205,4 @@ const AuthenticatedComponent = ({ bindShortcut, children }) => {
       <Footer />
     </AuthenticatedComponentContainer>
   );
-};
-
-export default mouseTrap(AuthenticatedComponent);
+});

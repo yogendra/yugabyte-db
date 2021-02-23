@@ -56,13 +56,12 @@ const YBSelectWithLabel = ({ label, meta, infoContent, infoTitle, ...otherProps 
   );
 }
 
-export default YBSelectWithLabel;
-
 // TODO: Rename all prior YBSelect references to YBSelectWithLabel.
 export const YBSelect = YBSelectWithLabel;
 
 export {
   YBControlledSelectWithLabel,
   YBUnControlledSelect,
-  YBControlledSelect
+  YBControlledSelect,
+  YBSelectWithLabel
 }

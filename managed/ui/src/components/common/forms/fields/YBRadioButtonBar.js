@@ -123,10 +123,9 @@ const YBRadioButtonBarDefaultWithLabel = ({ label, meta, ...otherProps }) =>{
   );
 }
 
-export default YBRadioButtonBar;
-
 export {
   YBRadioButtonBarDefault,
   YBRadioButtonBarDefaultWithLabel,
-  YBRadioButtonBarWithLabel
+  YBRadioButtonBarWithLabel,
+  YBRadioButtonBar
 }

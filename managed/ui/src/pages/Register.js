@@ -4,7 +4,7 @@ import React from 'react';
 
 import RegisterFormContainer from '../components/common/forms/RegisterForm/RegisterFormContainer';
 
-const Register = () => {
+export const Register = () => {
   return (
     <div className="dashboard-container">
       <RegisterFormContainer />

@@ -4,7 +4,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Popover, OverlayTrigger } from 'react-bootstrap';
 
-const YBInfoTip = ({ content, placement, title, children }) =>{
+export const YBInfoTip = ({ content, placement, title, children }) =>{
   const id = 'popover-trigger-hover-focus';
   const popover = (
     <Popover className="yb-popover" id={id} title={title}>
@@ -28,5 +28,3 @@ YBInfoTip.defaultProps = {
   placement: 'right',
   title: 'Info'
 };
-
-export default YBInfoTip;

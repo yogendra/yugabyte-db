@@ -4,7 +4,7 @@ import React from 'react';
 import { YBLoadingLinearIcon } from '../../indicators';
 import { isDefinedNotNull } from '../../../../utils/ObjectUtils';
 
-const YBButtonLink =
+export const YBButtonLink =
 ({
    btnClass,
    btnText,
@@ -38,5 +38,3 @@ const YBButtonLink =
     </a>
   );
 }
-
-export default YBButtonLink;

@@ -1,10 +1,11 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useEffect, useRef, useState} from 'react';
 import PropTypes from 'prop-types';
 
 import './Graph.scss';
 import { isDefinedNotNull } from '../../../utils/ObjectUtils';
+import {useComponentDidUpdate} from "../../../hooks/useComponentDidUpdate";
 
 const ProgressBar = require('progressbar.js');
 const GraphPath = ProgressBar.Path;
@@ -30,32 +31,20 @@ const colorObj = {
 
 // Graph componenent's value must be a float number between {0,1} interval.
 // Enforce all calculations outside this component.
-export default class Graph extends Component {
-  static propTypes = {
-    value: PropTypes.number.isRequired,
-    unit: PropTypes.string,
-    type: PropTypes.oneOf(['linear', 'semicircle'])
+export const Graph = ({ value, unit, type, metricKey }) => {
+
+  const [graph, setGraph] = useState()
+  const [prevValue, setPrevValue] = useState(value)
+  const values = {
+    width: 0,
+    color: '#339e34'
   };
+  const bar = null;
+  const label = useRef();
+  const counter = { var: 0 };
+  const initTween = null;
 
-  static defaultProps = {
-    type: 'linear'
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {};
-
-    this.values = {
-      width: 0,
-      color: '#339e34'
-    };
-    this.bar = null;
-    this.label = null;
-    this.counter = { var: 0 };
-    this.initTween = null;
-  }
-
-  calcColor = (value) => {
+  const calcColor = (value) => {
     let color = '#339e34';
     let colorPercentage = 0;
     if (value > 0.3 && value < 0.6) {
@@ -86,14 +75,15 @@ export default class Graph extends Component {
     return color;
   };
 
-  componentWillUnmount = () => {
-    if (isDefinedNotNull(this.initTween)) this.initTween.kill();
-  };
 
-  componentDidMount = () => {
+  if (isDefinedNotNull(initTween)) {
+    initTween.kill();
+  }
+
+  useEffect(() => {
     const { type, value } = this.props;
     const color = this.calcColor(value);
-    const graph = ((type) => {
+    const _graph = ((type) => {
       if (type === 'semicircle') {
         return new GraphPath(this.bar, {
           easing: 'easeOut',
@@ -108,10 +98,10 @@ export default class Graph extends Component {
         svgStyle: { width: '100%', height: '30px' }
       });
     })(type);
-    graph.set(0);
+    _graph.set(0);
     setTimeout(
       () =>
-        graph.animate(value, {
+        _graph.animate(value, {
           duration: 2000,
           from: { color: '#289b42', width: 10 },
           to: { color: color, width: 10 },
@@ -122,15 +112,13 @@ export default class Graph extends Component {
         }),
       500
     );
-    this.setState({
-      graph: graph
-    });
-  };
+    setGraph(_graph);
+  }, [])
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (prevProps.value !== this.props.value) {
-      const color = this.calcColor(this.props.value);
-      this.state.graph.animate(this.props.value, {
+  useComponentDidUpdate(() => {
+    if (prevValue !== value) {
+      const color = calcColor(value);
+      graph.animate(value, {
         duration: 1000,
         from: { color: '#289b42', width: 10 },
         to: { color: color, width: 10 },
@@ -140,9 +128,10 @@ export default class Graph extends Component {
         }
       });
     }
-  };
+  }, [value])
 
-  getGraphByType = (type) => {
+
+  const getGraphByType = (type) => {
     if (type === 'semicircle') {
       return (
         <svg x="0px" y="0px" className={`graph-body`} viewBox="0 0 79.2 46.1">
@@ -167,30 +156,37 @@ export default class Graph extends Component {
     return null;
   };
 
-  render() {
-    const value =
-      this.props.unit === 'percent' || this.props.unit === '%'
-        ? Math.round(this.props.value * 1000) / 10
-        : this.props.value;
-    const unit = this.props.unit
-      ? this.props.unit === 'percent' || this.props.unit === '%'
-        ? '%'
-        : ' ' + this.props.unit
-      : null;
-    return (
-      <div
-        id={this.props.metricKey}
-        className={`graph-container graph-${this.props.type || 'linear'}`}
-      >
-        {this.getGraphByType(this.props.type)}
+  const _value = unit === 'percent' || unit === '%'
+      ? Math.round(value * 1000) / 10
+      : value;
+  const _unit = unit
+    ? unit === 'percent' || unit === '%'
+      ? '%'
+      : ' ' + unit
+    : null;
+  return (
+    <div
+      id={metricKey}
+      className={`graph-container graph-${type || 'linear'}`}
+    >
+      {getGraphByType(type)}
 
-        {unit && (
-          <label ref={(div) => (this.label = div)}>
-            {value}
-            {unit}
-          </label>
-        )}
-      </div>
-    );
-  }
+      {unit && (
+        <label ref={label}>
+          {_value}
+          {_unit}
+        </label>
+      )}
+    </div>
+  );
 }
+
+Graph.propTypes = {
+  value: PropTypes.number.isRequired,
+  unit: PropTypes.string,
+  type: PropTypes.oneOf(['linear', 'semicircle'])
+};
+
+Graph.defaultProps = {
+  type: 'linear'
+};

@@ -130,5 +130,4 @@ export class YBControlledTextInput extends Component {
 
 // TODO: Deprecated. Rename all YBInputField references to YBTextInputWithLabel.
 export const YBInputField = YBTextInputWithLabel;
-export default YBTextInputWithLabel;
-export { YBTextInput };
+export { YBTextInput, YBTextInputWithLabel };

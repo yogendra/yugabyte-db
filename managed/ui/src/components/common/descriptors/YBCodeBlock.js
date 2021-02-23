@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-const YBCodeBlock = ({ label, className, children }) => {
+export const YBCodeBlock = ({ label, className, children }) => {
   return (
     <div className={className ? 'yb-code-block ' + className : 'yb-code-block'}>
       {label && <label>{label}</label>}
@@ -17,5 +17,3 @@ const YBCodeBlock = ({ label, className, children }) => {
 YBCodeBlock.propTypes = {
   label: PropTypes.string
 };
-
-export default YBCodeBlock;

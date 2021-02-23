@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 
-import Footer from './Footer';
+import { Footer } from './Footer';
 
 const mapDispatchToProps = (dispatch) => {
   return {};

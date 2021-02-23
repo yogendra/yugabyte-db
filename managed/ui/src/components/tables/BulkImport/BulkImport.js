@@ -12,18 +12,19 @@ import {
 import { getPrimaryCluster } from '../../../utils/UniverseUtils';
 import PropTypes from 'prop-types';
 
-export default class BulkImport extends Component {
-  static propTypes = {
-    tableInfo: PropTypes.object
-  };
-
-  confirmBulkImport = (values) => {
-    const {
-      universeDetails: { universeUUID, clusters },
-      tableInfo: { tableName, keySpace, tableID },
-      onHide,
-      bulkImport
-    } = this.props;
+export const BulkImport = (
+  {
+    visible,
+    onHide,
+    tableInfo: { keySpace, tableName, tableID },
+    handleSubmit,
+    universeDetails,
+    universeDetails: { universeUUID, clusters },
+    bulkImport,
+    tableInfo
+  }
+) => {
+  const confirmBulkImport = (values) => {
     const primaryCluster = getPrimaryCluster(clusters);
     const instanceCount = isDefinedNotNull(values['instanceCount'])
       ? values['instanceCount']
@@ -38,49 +39,45 @@ export default class BulkImport extends Component {
     bulkImport(universeUUID, tableID, payload);
   };
 
-  render() {
-    if (!isNonEmptyObject(this.props.tableInfo)) {
-      return <span />;
-    }
-    const {
-      visible,
-      onHide,
-      tableInfo: { keySpace, tableName },
-      handleSubmit,
-      universeDetails
-    } = this.props;
-    const s3label = 'S3 Bucket with data to be loaded into ' + keySpace + '.' + tableName;
-    const primaryCluster = getPrimaryCluster(universeDetails.clusters);
-    if (!isNonEmptyObject(primaryCluster)) {
-      return <span />;
-    }
 
-    return (
-      <div className="universe-apps-modal">
-        <YBModal
-          title={'Bulk Import into ' + keySpace + '.' + tableName}
-          visible={visible}
-          onHide={onHide}
-          showCancelButton={true}
-          cancelLabel={'Cancel'}
-          onFormSubmit={handleSubmit(this.confirmBulkImport)}
-        >
-          <Field
-            name="s3Bucket"
-            component={YBTextInputWithLabel}
-            label={s3label}
-            placeHolder="s3://foo.bar.com/bulkload/"
-            normalize={trimString}
-          />
-          <Field
-            name="instanceCount"
-            component={YBTextInputWithLabel}
-            label={'Number of task instances for EMR job'}
-            placeHolder={primaryCluster.userIntent.numNodes * 8}
-            normalize={normalizeToPositiveInt}
-          />
-        </YBModal>
-      </div>
-    );
+  if (!isNonEmptyObject(tableInfo)) {
+    return <span />;
   }
+  const s3label = 'S3 Bucket with data to be loaded into ' + keySpace + '.' + tableName;
+  const primaryCluster = getPrimaryCluster(universeDetails.clusters);
+  if (!isNonEmptyObject(primaryCluster)) {
+    return <span />;
+  }
+
+  return (
+    <div className="universe-apps-modal">
+      <YBModal
+        title={'Bulk Import into ' + keySpace + '.' + tableName}
+        visible={visible}
+        onHide={onHide}
+        showCancelButton={true}
+        cancelLabel={'Cancel'}
+        onFormSubmit={handleSubmit(confirmBulkImport)}
+      >
+        <Field
+          name="s3Bucket"
+          component={YBTextInputWithLabel}
+          label={s3label}
+          placeHolder="s3://foo.bar.com/bulkload/"
+          normalize={trimString}
+        />
+        <Field
+          name="instanceCount"
+          component={YBTextInputWithLabel}
+          label={'Number of task instances for EMR job'}
+          placeHolder={primaryCluster.userIntent.numNodes * 8}
+          normalize={normalizeToPositiveInt}
+        />
+      </YBModal>
+    </div>
+  );
 }
+
+BulkImport.propTypes = {
+  tableInfo: PropTypes.object
+};

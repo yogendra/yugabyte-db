@@ -16,7 +16,7 @@ import { isDefinedNotNull, isNonEmptyString } from '../../../utils/ObjectUtils';
 import { YBCodeBlock } from '../../common/descriptors/index';
 import { YBConfirmModal } from '../../modals';
 
-const OnPremNodesList = ({
+export const OnPremNodesList = withRouter(({
   cloud: { supportedRegionList, accessKeys, providers, nodeInstanceList, instanceTypes },
   showAddNodesDialog,
   reset,
@@ -31,7 +31,6 @@ const OnPremNodesList = ({
   handleSubmit,
   showProviderView,
   visibleModal,
-
 }) => {
   const [nodeToBeDeleted, setNodeToBeDeleted] = useState({})
 
@@ -183,19 +182,21 @@ const OnPremNodesList = ({
   const removeNodeItem = function (cell, row) {
     if (row) {
       if (row.inUse) {
-        return <i className={`fa fa-trash remove-cell-container`} />;
+        return <i className={`fa fa-trash remove-cell-container`}/>;
       } else {
         return (
           <i
             className={`fa fa-trash remove-cell-container remove-cell-active`}
-            onClick={() => { showConfirmDeleteModalLocal(row); }}
+            onClick={() => {
+              showConfirmDeleteModalLocal(row);
+            }}
           />
         );
       }
     }
   };
 
-  let provisionMessage = <span />;
+  let provisionMessage = <span/>;
   const onPremProvider = providers.data.find((provider) => provider.code === 'onprem');
   let useHostname = false;
   if (isDefinedNotNull(onPremProvider)) {
@@ -241,12 +242,12 @@ const OnPremNodesList = ({
       });
       zoneOptions.unshift(
         <option key={-1} value={''}>
-            Select
+          Select
         </option>
       );
       machineTypeOptions.unshift(
         <option key={-1} value={''}>
-            Select
+          Select
         </option>
       );
       return (
@@ -275,7 +276,7 @@ const OnPremNodesList = ({
   return (
     <div className="onprem-node-instances">
       <span className="buttons pull-right">
-        <YBButton btnText="Add Instances" btnIcon="fa fa-plus" onClick={addNodeToList} />
+        <YBButton btnText="Add Instances" btnIcon="fa fa-plus" onClick={addNodeToList}/>
       </span>
 
       <YBBreadcrumb to="/config/cloud/onprem" onClick={showProviderView}>
@@ -296,7 +297,7 @@ const OnPremNodesList = ({
             }}
             containerClass="onprem-nodes-table"
           >
-            <TableHeaderColumn dataField="nodeId" isKey={true} hidden={true} dataSort />
+            <TableHeaderColumn dataField="nodeId" isKey={true} hidden={true} dataSort/>
             <TableHeaderColumn dataField="instanceName" dataSort>
               Identifier
             </TableHeaderColumn>
@@ -315,7 +316,7 @@ const OnPremNodesList = ({
             <TableHeaderColumn dataField="instanceType" dataSort>
               Instance Type
             </TableHeaderColumn>
-            <TableHeaderColumn dataField="" dataFormat={removeNodeItem} />
+            <TableHeaderColumn dataField="" dataFormat={removeNodeItem}/>
           </BootstrapTable>
         </Col>
       </Row>
@@ -348,6 +349,4 @@ const OnPremNodesList = ({
       </YBConfirmModal>
     </div>
   );
-}
-
-export default withRouter(OnPremNodesList);
+})

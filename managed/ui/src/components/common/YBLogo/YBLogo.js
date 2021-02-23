@@ -5,7 +5,7 @@ import LogoFull from './images/yb_yblogo_darkbg.svg';
 import LogoMonochrome from './images/yb_yblogo_whitebg.svg';
 import LogoIcon from './images/yb_ybsymbol_original.svg';
 
-const YBLogo = ({ type }) => {
+export const YBLogo = ({ type }) => {
   if (type === 'full') {
     return (
       <object className="logo" data={LogoFull} type="image/svg+xml">
@@ -26,5 +26,3 @@ const YBLogo = ({ type }) => {
     </object>
   );
 }
-
-export default YBLogo;

@@ -1,6 +1,6 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import {
   removeNullProperties,
@@ -12,6 +12,7 @@ import {
 } from '../../../utils/ObjectUtils';
 import './MetricsPanel.scss';
 import { METRIC_FONT } from '../MetricsConfig';
+import {useComponentDidUpdate} from "../../../hooks/useComponentDidUpdate";
 
 const Plotly = require('plotly.js/lib/core');
 
@@ -20,14 +21,13 @@ const CONTAINER_PADDING = 60;
 const MAX_GRAPH_WIDTH_PX = 600;
 const GRAPH_GUTTER_WIDTH_PX = 15;
 
-export default class MetricsPanel extends Component {
-  static propTypes = {
-    metric: PropTypes.object.isRequired,
-    metricKey: PropTypes.string.isRequired
-  };
+export const MetricsPanel = ({ metricKey, metric, containerWidth, width, height }) => {
+  const [prevContainerWidth, setPrevContainerWidth] =  useState(containerWidth)
+  const [ prevMetricKey, setPrevMetricKey] =  useState(metricKey)
+  const [prevWidth, setPrevWidth] =  useState(width)
+  const [prevMetric, setPrevMetric] =  useState(metric)
 
-  plotGraph = () => {
-    const { metricKey, metric } = this.props;
+  const plotGraph = () => {
     if (isNonEmptyObject(metric)) {
       // Remove Null Properties from the layout
       removeNullProperties(metric.layout);
@@ -58,9 +58,8 @@ export default class MetricsPanel extends Component {
       });
       if (max === 0) max = 1.01;
       metric.layout.autosize = false;
-      metric.layout.width =
-        this.props.width || this.getGraphWidth(this.props.containerWidth || 1200);
-      metric.layout.height = this.props.height || 360;
+      metric.layout.width = width || getGraphWidth(containerWidth || 1200);
+      metric.layout.height = height || 360;
       metric.layout.showlegend = true;
       metric.layout.margin = {
         l: 45,
@@ -111,23 +110,21 @@ export default class MetricsPanel extends Component {
     }
   };
 
-  componentDidMount() {
-    this.plotGraph();
-  }
+  useEffect(() => {
+    plotGraph();
+  }, [])
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.containerWidth !== prevProps.containerWidth ||
-      this.props.width !== prevProps.width
-    ) {
-      Plotly.relayout(prevProps.metricKey, {
-        width: this.props.width || this.getGraphWidth(this.props.containerWidth)
+  useComponentDidUpdate(()=> {
+
+    if (containerWidth !== prevContainerWidth || width !== prevWidth) {
+      Plotly.relayout(prevMetricKey, {
+        width: width || getGraphWidth(containerWidth)
       });
     } else {
       // All graph lines have the same x-axis, so get the first
       // and compare unix time interval
-      const prevTime = prevProps.metric.data[0]?.x;
-      const currTime = this.props.metric.data[0]?.x;
+      const prevTime = prevMetric.data[0]?.x;
+      const currTime = metric.data[0]?.x;
       if (
         prevTime &&
         currTime &&
@@ -135,22 +132,29 @@ export default class MetricsPanel extends Component {
           prevTime[prevTime.length - 1] !== currTime[currTime.length - 1])
       ) {
         // Re-plot graph
-        this.plotGraph();
+        plotGraph();
       }
     }
-  }
+    setPrevMetricKey(metricKey);
+    setPrevWidth(width);
+    setPrevMetric(metric);
+    setPrevContainerWidth(containerWidth);
+  }, [])
 
-  getGraphWidth(containerWidth) {
+  const getGraphWidth = (containerWidth) => {
     const width = containerWidth - CONTAINER_PADDING - WIDTH_OFFSET;
     const columnCount = Math.ceil(width / MAX_GRAPH_WIDTH_PX);
     return Math.floor(width / columnCount) - GRAPH_GUTTER_WIDTH_PX;
   }
 
-  render() {
-    return (
-      <div id={this.props.metricKey} className="metrics-panel">
-        <div />
-      </div>
-    );
-  }
+  return (
+    <div id={metricKey} className="metrics-panel">
+      <div />
+    </div>
+  );
 }
+
+MetricsPanel.propTypes = {
+  metric: PropTypes.object.isRequired,
+  metricKey: PropTypes.string.isRequired
+};

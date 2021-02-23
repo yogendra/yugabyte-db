@@ -5,7 +5,7 @@ import { Button } from 'react-bootstrap';
 import { YBLoadingLinearIcon } from '../../indicators';
 import { isDefinedNotNull } from '../../../../utils/ObjectUtils';
 
-const YBButton = ({
+export const YBButton = ({
   btnClass,
   btnText,
   btnIcon,
@@ -40,5 +40,3 @@ const YBButton = ({
     </Button>
   );
 };
-
-export default YBButton;

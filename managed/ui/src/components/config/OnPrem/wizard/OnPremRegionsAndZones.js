@@ -137,7 +137,7 @@ export const OnPremListRegionsAndZones = ({ fields, isEditProvider }) =>{
   );
 }
 
-const OnPremRegionsAndZones = ({ prevPage, setOnPremRegionsAndZones, cancelEdit, handleSubmit, switchToJsonEntry, isEditProvider } ) => {
+export const OnPremRegionsAndZones = ({ prevPage, setOnPremRegionsAndZones, cancelEdit, handleSubmit, switchToJsonEntry, isEditProvider } ) => {
   useEffect(() =>{
     document.getElementById('onprem-region-form').scrollIntoView(false);
   }, [])
@@ -193,5 +193,3 @@ const OnPremRegionsAndZones = ({ prevPage, setOnPremRegionsAndZones, cancelEdit,
     </div>
   );
 }
-
-export default OnPremRegionsAndZones;

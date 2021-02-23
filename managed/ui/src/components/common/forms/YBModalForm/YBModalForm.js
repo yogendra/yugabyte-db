@@ -6,7 +6,7 @@ import { Modal } from 'react-bootstrap';
 import { YBButton } from '../fields';
 import { Formik } from 'formik';
 
-const YBModalForm = ({
+export const YBModalForm = ({
  visible,
  onHide,
  size,
@@ -104,5 +104,3 @@ YBModalForm.defaultProps = {
   cancelLabel: 'Cancel',
   showCancelButton: false
 };
-
-export default YBModalForm;

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import './stylesheets/DescriptionItem.scss';
 
-const DescriptionItem = ({ title, children }) => {
+export const DescriptionItem = ({ title, children }) => {
   return (
     <div className="description-item clearfix">
       <div className="description-item-text">{children}</div>
@@ -17,5 +17,3 @@ const DescriptionItem = ({ title, children }) => {
 DescriptionItem.propTypes = {
   children: PropTypes.element.isRequired
 };
-
-export default DescriptionItem;

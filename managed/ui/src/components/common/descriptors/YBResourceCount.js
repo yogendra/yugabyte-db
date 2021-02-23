@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import './stylesheets/YBResourceCount.scss';
 
-const YBResourceCount = ({ size, kind, unit, inline, pluralizeKind, className, pluralizeUnit, unitPlural, kindPlural  }) => {
+export const YBResourceCount = ({ size, kind, unit, inline, pluralizeKind, className, pluralizeUnit, unitPlural, kindPlural  }) => {
 
   const pluralize = (unit) => {
     return unit + (unit.match(/s$/) ? 'es' : 's');
@@ -50,5 +50,3 @@ YBResourceCount.defaultProps = {
   pluralizeKind: false,
   pluralizeUnit: false
 };
-
-export default YBResourceCount;

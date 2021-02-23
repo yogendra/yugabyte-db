@@ -12,7 +12,7 @@ import * as Yup from 'yup';
 import './RegisterForm.scss';
 import {useComponentDidUpdate} from "../../../../hooks/useComponentDidUpdate";
 
-const RegisterForm = ({
+export const RegisterForm = ({
   customer: { authToken },
   registerCustomer
 }) => {
@@ -105,5 +105,3 @@ const RegisterForm = ({
     </div>
   );
 }
-
-export default RegisterForm;

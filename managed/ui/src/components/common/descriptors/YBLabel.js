@@ -6,7 +6,7 @@ import { isNonEmptyObject, isNonEmptyString } from '../../../utils/ObjectUtils';
 import YBInfoTip from './YBInfoTip';
 import _ from 'lodash';
 
-const YBLabel = ({
+export const YBLabel = ({
   label,
   insetError,
   meta,
@@ -70,5 +70,3 @@ const YBLabel = ({
 YBLabel.propTypes = {
   insetError: PropTypes.bool // true => inset error message inside text/textarea fields
 };
-
-export default YBLabel;

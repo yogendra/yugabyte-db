@@ -4,7 +4,7 @@ import React  from 'react';
 
 import { isValidObject } from '../../../../utils/ObjectUtils';
 
-const YBCheckBox = ({ input, label, checkState, onClick, name, id }) => {
+export const YBCheckBox = ({ input, label, checkState, onClick, name, id }) => {
   const onCheckClick = (event) => {
     if (input && input.onChange) {
       input.onChange(event);
@@ -33,5 +33,3 @@ const YBCheckBox = ({ input, label, checkState, onClick, name, id }) => {
     </label>
   );
 }
-
-export default YBCheckBox;

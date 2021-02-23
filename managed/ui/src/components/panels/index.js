@@ -1,21 +1,44 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as HighlightedStatsPanel } from './HighlightedStatsPanel/HighlightedStatsPanel';
-export { default as UniverseDisplayPanel } from './UniverseDisplayPanel/UniverseDisplayPanel';
-export { default as UniverseRegionLocationPanel } from './UniverseRegionLocationPanel/UniverseRegionLocationPanel';
-export { default as YBPanelItem } from './YBPanelItem/YBPanelItem';
-export { default as YBWidget } from './YBWidget/YBWidget';
-export { default as YBTabsPanel } from './YBTabsPanel/YBTabsPanel';
-export { default as YBTabsWithLinksPanel } from './YBTabsPanel/YBTabsWithLinksPanel';
-export { default as UniverseInfoPanel } from './UniverseInfoPanel/UniverseInfoPanel';
-export { default as UniverseInfoPanelContainer } from './UniverseInfoPanel/UniverseInfoPanelContainer';
-export { default as ConnectStringPanel } from './ConnectStringPanel/ConnectStringPanel';
-export { default as ResourceStringPanel } from './ResourceStringPanel/ResourceStringPanel';
-export { default as ResourceStringPanelContainer } from './ResourceStringPanel/ResourceStringPanelContainer';
-export { default as ClusterInfoPanel } from './ClusterInfoPanel/ClusterInfoPanel';
-export { default as ClusterInfoPanelContainer } from './ClusterInfoPanel/ClusterInfoPanelContainer';
-export { default as HighlightedStatsPanelContainer } from './HighlightedStatsPanel/HighlightedStatsPanelContainer';
-export { default as UniverseDisplayPanelContainer } from './UniverseDisplayPanel/UniverseDisplayPanelContainer';
-export { default as UniverseRegionLocationPanelContainer } from './UniverseRegionLocationPanel/UniverseRegionLocationPanelContainer';
-export { default as YBPanelItemContainer } from './YBPanelItem/YBPanelItemContainer';
-export { default as TableInfoPanel } from './TableInfoPanel/TableInfoPanel';
+import { HighlightedStatsPanel } from './HighlightedStatsPanel/HighlightedStatsPanel';
+import { UniverseDisplayPanel } from './UniverseDisplayPanel/UniverseDisplayPanel';
+import { UniverseRegionLocationPanel } from './UniverseRegionLocationPanel/UniverseRegionLocationPanel';
+import { YBPanelItem } from './YBPanelItem/YBPanelItem';
+import { YBWidget } from './YBWidget/YBWidget';
+import { YBTabsPanel } from './YBTabsPanel/YBTabsPanel';
+import { UniverseInfoPanel } from './UniverseInfoPanel/UniverseInfoPanel';
+import UniverseInfoPanelContainer from './UniverseInfoPanel/UniverseInfoPanelContainer';
+import { ConnectStringPanel } from './ConnectStringPanel/ConnectStringPanel';
+import { ResourceStringPanel } from './ResourceStringPanel/ResourceStringPanel';
+import ResourceStringPanelContainer from './ResourceStringPanel/ResourceStringPanelContainer';
+import { ClusterInfoPanel } from './ClusterInfoPanel/ClusterInfoPanel';
+import ClusterInfoPanelContainer from './ClusterInfoPanel/ClusterInfoPanelContainer';
+import HighlightedStatsPanelContainer from './HighlightedStatsPanel/HighlightedStatsPanelContainer';
+import UniverseDisplayPanelContainer from './UniverseDisplayPanel/UniverseDisplayPanelContainer';
+import UniverseRegionLocationPanelContainer from './UniverseRegionLocationPanel/UniverseRegionLocationPanelContainer';
+import YBPanelItemContainer from './YBPanelItem/YBPanelItemContainer';
+import { TableInfoPanel } from './TableInfoPanel/TableInfoPanel';
+import { YBTabsWithLinksPanel } from './YBTabsPanel/YBTabsWithLinksPanel';
+
+
+export {
+  HighlightedStatsPanel,
+  UniverseDisplayPanel,
+  UniverseRegionLocationPanel,
+  YBPanelItem,
+  YBWidget,
+  YBTabsPanel,
+  YBTabsWithLinksPanel,
+  UniverseInfoPanel,
+  UniverseInfoPanelContainer,
+  ConnectStringPanel,
+  ResourceStringPanel,
+  ResourceStringPanelContainer,
+  ClusterInfoPanel,
+  ClusterInfoPanelContainer,
+  HighlightedStatsPanelContainer,
+  UniverseDisplayPanelContainer,
+  UniverseRegionLocationPanelContainer,
+  YBPanelItemContainer,
+  TableInfoPanel
+}

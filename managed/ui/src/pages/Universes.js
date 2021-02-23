@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-const Universes = ({ children }) => {
+export const Universes = ({ children }) => {
   return <div>{children}</div>;
 };
 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import './stylesheets/YBLoadingIcon.scss';
 
-const YBLoadingLinearIcon = ({ size }) => {
+export const YBLoadingLinearIcon = ({ size }) => {
   const className = `yb-loader-linear ${(size ? `yb-loader-linear-${size}` : '')}`;
   return (
     <div className={className}>
@@ -17,5 +17,3 @@ const YBLoadingLinearIcon = ({ size }) => {
 YBLoadingLinearIcon.propTypes = {
   size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'inline'])
 };
-
-export default YBLoadingLinearIcon;

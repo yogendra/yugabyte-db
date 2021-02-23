@@ -1,13 +1,27 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as TasksList } from './TaskList/TasksList';
-export { default as TaskAlerts } from './TaskAlerts/TaskAlerts';
-export { default as TaskProgress } from './TaskProgress/TaskProgress';
-export { default as TaskProgressBar } from './TaskProgressBar/TaskProgressBar';
-export { default as TaskProgressStepBar } from './TaskProgressStepBar/TaskProgressStepBar';
-export { default as TasksListContainer } from './TaskList/TasksListContainer';
-export { default as TaskAlertsContainer } from './TaskAlerts/TaskAlertsContainer';
-export { default as TaskProgressContainer } from './TaskProgress/TaskProgressContainer';
-export { default as TaskListTable } from './TaskList/TaskListTable';
-export { default as TaskDetail } from './TaskDetail/TaskDetail';
-export { default as TaskDetailContainer } from './TaskDetail/TaskDetailContainer';
+import { TasksList } from './TaskList/TasksList';
+import { TaskAlerts } from './TaskAlerts/TaskAlerts';
+import { TaskProgress } from './TaskProgress/TaskProgress';
+import { TaskProgressBar } from './TaskProgressBar/TaskProgressBar';
+import { TaskProgressStepBar } from './TaskProgressStepBar/TaskProgressStepBar';
+import TasksListContainer from './TaskList/TasksListContainer';
+import TaskAlertsContainer from './TaskAlerts/TaskAlertsContainer';
+import TaskProgressContainer from './TaskProgress/TaskProgressContainer';
+import { TaskListTable } from './TaskList/TaskListTable';
+import { TaskDetail } from './TaskDetail/TaskDetail';
+import TaskDetailContainer from './TaskDetail/TaskDetailContainer';
+
+export {
+  TasksList,
+  TaskAlerts,
+  TaskProgress,
+  TaskProgressBar,
+  TaskProgressStepBar,
+  TasksListContainer,
+  TaskAlertsContainer,
+  TaskProgressContainer,
+  TaskListTable,
+  TaskDetail,
+  TaskDetailContainer
+}

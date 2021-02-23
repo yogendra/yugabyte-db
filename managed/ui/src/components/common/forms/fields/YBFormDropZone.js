@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import './stylesheets/YBDropZone.scss';
 
-const YBFormDropZone = (
+export const YBFormDropZone = (
   {
     title,
     field: { name },
@@ -49,5 +49,3 @@ const YBFormDropZone = (
     </>
   );
 }
-
-export default YBFormDropZone;

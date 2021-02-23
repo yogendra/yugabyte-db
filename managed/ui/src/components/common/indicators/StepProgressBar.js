@@ -3,7 +3,7 @@
 import React from 'react';
 import './stylesheets/StepProgressBar.scss';
 
-const StepProgressBar = ({
+export const StepProgressBar = ({
   details: { taskDetails }
 }) => {
   const isFailedIndex = (taskDetails) => {
@@ -100,5 +100,3 @@ const StepProgressBar = ({
     </ul>
   );
 }
-
-export default StepProgressBar;

@@ -4,7 +4,7 @@ import React from 'react';
 import { DescriptionItem } from './';
 
 import './stylesheets/YBStatsBlock.scss';
-const YBStatsBlock = ({ value, label }) => {
+export const YBStatsBlock = ({ value, label }) => {
   return (
     <div className="tile_stats_count text-center">
       <DescriptionItem>
@@ -14,6 +14,3 @@ const YBStatsBlock = ({ value, label }) => {
     </div>
   );
 }
-
-
-export default YBStatsBlock;

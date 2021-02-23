@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-const YBFormCheckbox = (
+export const YBFormCheckbox = (
   {
     field: { name, value, onChange, onBlur },
     form: { errors, touched, setFieldValue },
@@ -44,5 +44,3 @@ const YBFormCheckbox = (
     </label>
   );
 }
-
-export default YBFormCheckbox;

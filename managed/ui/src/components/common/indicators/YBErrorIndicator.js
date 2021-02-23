@@ -5,7 +5,7 @@ import frown from './images/frown_img.png';
 import './stylesheets/YBErrorIndicator.scss';
 import { Link } from 'react-router';
 
-const YBErrorIndicator = ({ type, uuid }) =>{
+export const YBErrorIndicator = ({ type, uuid }) =>{
   let errorDisplayMessage = <span />;
   let errorRecoveryMessage = <span />;
 
@@ -29,5 +29,3 @@ const YBErrorIndicator = ({ type, uuid }) =>{
     </div>
   );
 }
-
-export default YBErrorIndicator;

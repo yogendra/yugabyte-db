@@ -6,7 +6,7 @@ import { isDefinedNotNull } from '../../../../utils/ObjectUtils';
 
 import Select from 'react-select';
 
-const YBFormSelect = ({ form, field, onChange, ...rest }) => {
+export const YBFormSelect = ({ form, field, onChange, ...rest }) => {
   const handleChange = (option) => {
     if (isDefinedNotNull(onChange) && typeof onChange === 'function') {
       onChange(this.props, option);
@@ -86,5 +86,3 @@ const YBFormSelect = ({ form, field, onChange, ...rest }) => {
     </YBLabel>
   );
 }
-
-export default YBFormSelect;

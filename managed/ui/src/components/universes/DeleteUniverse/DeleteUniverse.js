@@ -1,43 +1,50 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useCallback, useState} from 'react';
 import { getPromiseState } from '../../../utils/PromiseUtils';
 import 'react-bootstrap-multiselect/css/bootstrap-multiselect.css';
-import { browserHistory } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import { YBModal, YBCheckBox, YBTextInput } from '../../common/forms/fields';
 import { isEmptyObject } from '../../../utils/ObjectUtils';
 import { getReadOnlyCluster } from '../../../utils/UniverseUtils';
+import {useComponentDidUpdate} from "../../../hooks/useComponentDidUpdate";
 
-export default class DeleteUniverse extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isForceDelete: false,
-      universeName: false
-    };
-  }
-
-  toggleForceDelete = () => {
-    this.setState({ isForceDelete: !this.state.isForceDelete });
-  };
-
-  onChangeUniverseName = (value) => {
-    this.setState({ universeName: value });
-  };
-
-  closeDeleteModal = () => {
-    this.props.onHide();
-  };
-
-  getModalBody = () => {
-    const {
-      body,
-      universe: {
-        currentUniverse: {
-          data: { name }
-        }
+export const DeleteUniverse = (
+  {
+    body,
+    universe: {
+      currentUniverse: {
+        data: { name },
+        data
       }
-    } = this.props;
+    },
+    onHide,
+    type,
+    universe,
+    fetchUniverseMetadata,
+    visible,
+    title,
+    error,
+    submitDeleteUniverse
+  }
+) => {
+  const [isForceDelete, setIsForceDelete] = useState(false);
+  const [universeName, setUniverseName] = useState(false);
+  const [prevUniverse, setPrevUniverse] = useState(universe);
+  const history = useHistory()
+  const toggleForceDelete = () => {
+    setIsForceDelete(!isForceDelete);
+  };
+
+  const onChangeUniverseName = (value) => {
+    setUniverseName(value);
+  };
+
+  const closeDeleteModal = () => {
+    onHide();
+  };
+
+  const getModalBody = useCallback(() => {
     return (
       <div>
         {body}
@@ -47,22 +54,16 @@ export default class DeleteUniverse extends Component {
         <YBTextInput
           label="Confirm universe name:"
           placeHolder={name}
-          input={{ onChange: this.onChangeUniverseName, onBlur: () => {} }}
+          input={{ onChange: onChangeUniverseName, onBlur: () => {} }}
         />
       </div>
     );
-  };
+  }, [body]);
 
-  confirmDelete = () => {
-    const {
-      type,
-      universe: {
-        currentUniverse: { data }
-      }
-    } = this.props;
-    this.props.onHide();
+  const confirmDelete = () => {
+    onHide();
     if (type === 'primary') {
-      this.props.submitDeleteUniverse(data.universeUUID, this.state.isForceDelete);
+      submitDeleteUniverse(data.universeUUID, this.state.isForceDelete);
     } else {
       const cluster = getReadOnlyCluster(data.universeDetails.clusters);
       if (isEmptyObject(cluster)) return;
@@ -70,50 +71,39 @@ export default class DeleteUniverse extends Component {
     }
   };
 
-  componentDidUpdate(prevProps) {
+  useComponentDidUpdate(() => {
     if (
-      getPromiseState(prevProps.universe.deleteUniverse).isLoading() &&
-      getPromiseState(this.props.universe.deleteUniverse).isSuccess()
+      getPromiseState(prevUniverse.deleteUniverse).isLoading() &&
+      getPromiseState(universe.deleteUniverse).isSuccess()
     ) {
-      this.props.fetchUniverseMetadata();
-      browserHistory.push('/universes');
+      fetchUniverseMetadata();
+      history.go('/universes')
     }
-  }
+    setPrevUniverse(universe);
+  }, [universe]);
 
-  render() {
-    const {
-      visible,
-      title,
-      error,
-      onHide,
-      universe: {
-        currentUniverse: {
-          data: { name }
-        }
+
+  return (
+    <YBModal
+      visible={visible}
+      formName={'DeleteUniverseForm'}
+      onHide={onHide}
+      submitLabel={'Yes'}
+      cancelLabel={'No'}
+      showCancelButton={true}
+      title={title + name}
+      onFormSubmit={confirmDelete}
+      error={error}
+      footerAccessory={
+        <YBCheckBox
+          label={'Ignore Errors and Force Delete'}
+          className="footer-accessory"
+          input={{ checked: isForceDelete, onChange: toggleForceDelete }}
+        />
       }
-    } = this.props;
-    return (
-      <YBModal
-        visible={visible}
-        formName={'DeleteUniverseForm'}
-        onHide={onHide}
-        submitLabel={'Yes'}
-        cancelLabel={'No'}
-        showCancelButton={true}
-        title={title + name}
-        onFormSubmit={this.confirmDelete}
-        error={error}
-        footerAccessory={
-          <YBCheckBox
-            label={'Ignore Errors and Force Delete'}
-            className="footer-accessory"
-            input={{ checked: this.state.isForceDelete, onChange: this.toggleForceDelete }}
-          />
-        }
-        asyncValidating={this.state.universeName !== name}
-      >
-        {this.getModalBody()}
-      </YBModal>
-    );
-  }
+      asyncValidating={universeName !== name}
+    >
+      {getModalBody()}
+    </YBModal>
+  );
 }

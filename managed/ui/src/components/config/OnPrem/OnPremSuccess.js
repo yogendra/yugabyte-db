@@ -22,7 +22,7 @@ import OnPremNodesListContainer from './OnPremNodesListContainer';
 
 const PROVIDER_TYPE = 'onprem';
 
-const OnPremSuccess = (
+export const OnPremSuccess = withRouter((
   props
 ) => {
   const [manageInstances, setManageInstances] = useState(false);
@@ -301,6 +301,4 @@ const OnPremSuccess = (
       </Row>
     </div>
   );
-}
-
-export default withRouter(OnPremSuccess);
+})

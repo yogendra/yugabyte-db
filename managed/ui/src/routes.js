@@ -9,27 +9,31 @@ import { validateToken, validateFromTokenResponse,
   fetchCustomerCount, customerTokenError,
   resetCustomer, insecureLogin,
   insecureLoginResponse } from './actions/customers';
-import App from './app/App';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import AuthenticatedComponent from './pages/AuthenticatedComponent';
-import Dashboard from './pages/Dashboard';
-import UniverseDetail from './pages/UniverseDetail';
-import Universes from './pages/Universes';
-import { Tasks, TasksList, TaskDetail } from './pages/tasks';
-import Alerts from './pages/Alerts';
-import ListUniverse from './pages/ListUniverse';
-import Metrics from './pages/Metrics';
-import DataCenterConfiguration from './pages/DataCenterConfiguration';
-import TableDetail from './pages/TableDetail';
-import Help from './pages/Help';
-import Profile from './pages/Profile';
-import YugawareLogs from './pages/YugawareLogs';
-import Importer from './pages/Importer';
-import Releases from './pages/Releases';
+import { App } from './app/App';
 import { isDefinedNotNull } from './utils/ObjectUtils';
 import { CreateUniverse } from './redesign/universe/CreateUniverse';
 import { EditUniverse } from './redesign/universe/EditUniverse';
+import {
+  Alerts,
+  AuthenticatedComponent,
+  Login,
+  TaskDetail,
+  Tasks,
+  TasksList,
+  Dashboard,
+  Universes,
+  ListUniverse,
+  Importer,
+  UniverseDetail,
+  TableDetail,
+  Metrics,
+  DataCenterConfiguration,
+  Help,
+  Profile,
+  YugawareLogs,
+  Releases,
+  Register
+} from './pages';
 
 export const clearCredentials = () => {
   localStorage.removeItem('authToken');

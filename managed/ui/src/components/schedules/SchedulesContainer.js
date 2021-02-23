@@ -1,7 +1,7 @@
 // Copyright YugaByte Inc.
 
 import { connect } from 'react-redux';
-import Schedules from './Schedules';
+import { Schedules } from './Schedules';
 import {
   getSchedules,
   getSchedulesResponse,

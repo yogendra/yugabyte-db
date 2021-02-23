@@ -1,15 +1,16 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {useCallback} from 'react';
 import PropTypes from 'prop-types';
 import { ProgressBar } from 'react-bootstrap';
 
-export default class TaskProgressBar extends Component {
-  static propTypes = {
-    progressData: PropTypes.object.isRequired
-  };
+export const TaskProgressBar = (
+  {
+    progressData: { status, percent }
+  }
+) =>{
 
-  getStyleByStatus(status) {
+  const getStyleByStatus = useCallback(() =>{
     if (status === 'Failure') {
       return 'danger';
     } else if (status === 'Success') {
@@ -18,14 +19,13 @@ export default class TaskProgressBar extends Component {
       return 'info';
     }
     return null;
-  }
+  }, [status])
 
-  render() {
-    const {
-      progressData: { status, percent }
-    } = this.props;
-    return (
-      <ProgressBar now={percent} label={`${percent}%`} bsStyle={this.getStyleByStatus(status)} />
-    );
-  }
+  return (
+    <ProgressBar now={percent} label={`${percent}%`} bsStyle={getStyleByStatus()} />
+  );
 }
+
+TaskProgressBar.propTypes = {
+  progressData: PropTypes.object.isRequired
+};

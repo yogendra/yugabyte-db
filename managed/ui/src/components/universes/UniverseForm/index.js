@@ -1,6 +1,13 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as UniverseForm } from './UniverseForm';
-export { default as UniverseFormContainer } from './UniverseFormContainer';
-export { default as UniverseFormNew } from './UniverseFormNew';
-export { default as UniverseFormContainerNew } from './UniverseFormContainerNew';
+import { UniverseForm } from './UniverseForm';
+import UniverseFormContainer from './UniverseFormContainer';
+import { UniverseFormNew } from './UniverseFormNew';
+import { UniverseFormContainerNew } from './UniverseFormContainerNew';
+
+export {
+  UniverseForm,
+  UniverseFormContainer,
+  UniverseFormNew,
+  UniverseFormContainerNew
+}

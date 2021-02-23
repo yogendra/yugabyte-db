@@ -7,7 +7,7 @@ import 'react-fa';
 
 import './stylesheets/ProgressList.css';
 
-const ProgressList = ({ items }) => {
+export const ProgressList = ({ items }) => {
   const getIconByType = (type) => {
     if (type === 'Initializing') {
       return 'fa fa-clock-o';
@@ -41,5 +41,3 @@ ProgressList.propTypes = {
 ProgressList.defaultProps = {
   type: 'None'
 };
-
-export default ProgressList;

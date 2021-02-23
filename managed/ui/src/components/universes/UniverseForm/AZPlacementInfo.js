@@ -48,76 +48,75 @@ const statusTypes = {
   }
 };
 
-export default class AZPlacementInfo extends Component {
-  static propTypes = {
-    placementInfo: PropTypes.object.isRequired
-  };
-  render() {
-    const { placementInfo, placementCloud, providerCode } = this.props;
-    let currentStatusType;
+export const AZPlacementInfo = ({ placementInfo, placementCloud, providerCode } ) => {
 
-    // If placementInfo and placementCloud is empty and provier is not onprem then return
-    if ((!isNonEmptyObject(placementInfo) || !isNonEmptyObject(placementCloud)) && providerCode !== "onprem") {
-      return <span />;
-    }
+  let currentStatusType;
 
-    const replicationFactor = placementInfo.replicationFactor;
-    const regionList = placementCloud?.regionList || [];
-    let multiRegion = true;
-    let multiAz = true;
+  // If placementInfo and placementCloud is empty and provier is not onprem then return
+  if ((!isNonEmptyObject(placementInfo) || !isNonEmptyObject(placementCloud)) && providerCode !== "onprem") {
+    return <span />;
+  }
 
-    // This logic is to help determine whether any AZ or region in the current universe config
-    // contains a majority of tablet replicas. This determines whether the current config will
-    // result in a cluster that is resilient to AZ or Region level failures while still maintaining
-    // quorum.
-    regionList.forEach((region) => {
-      const azList = region.azList;
-      let regionNumReplicas = 0;
-      azList.forEach((az) => {
-        regionNumReplicas += az.replicationFactor;
-        if (replicationFactor % 2 === 0) {
-          if (replicationFactor / 2 < az.replicationFactor) {
-            multiAz = false;
-          }
-        } else {
-          if ((replicationFactor - 1) / 2 < az.replicationFactor) {
-            multiAz = false;
-          }
-        }
-      });
+  const replicationFactor = placementInfo.replicationFactor;
+  const regionList = placementCloud?.regionList || [];
+  let multiRegion = true;
+  let multiAz = true;
 
+  // This logic is to help determine whether any AZ or region in the current universe config
+  // contains a majority of tablet replicas. This determines whether the current config will
+  // result in a cluster that is resilient to AZ or Region level failures while still maintaining
+  // quorum.
+  regionList.forEach((region) => {
+    const azList = region.azList;
+    let regionNumReplicas = 0;
+    azList.forEach((az) => {
+      regionNumReplicas += az.replicationFactor;
       if (replicationFactor % 2 === 0) {
-        if (replicationFactor / 2 < regionNumReplicas) {
-          multiRegion = false;
+        if (replicationFactor / 2 < az.replicationFactor) {
+          multiAz = false;
         }
       } else {
-        if ((replicationFactor - 1) / 2 < regionNumReplicas) {
-          multiRegion = false;
+        if ((replicationFactor - 1) / 2 < az.replicationFactor) {
+          multiAz = false;
         }
       }
     });
-    
 
-    if (placementInfo.error) {
-      currentStatusType = placementInfo.error.type;
-    } else if (replicationFactor === 1) {
-      currentStatusType = 'singleRF';
-    } else if (multiRegion) {
-      currentStatusType = 'multiRegion';
-    } else if (multiAz) {
-      currentStatusType = 'regionWarning';
+    if (replicationFactor % 2 === 0) {
+      if (replicationFactor / 2 < regionNumReplicas) {
+        multiRegion = false;
+      }
     } else {
-      currentStatusType = 'azWarning';
+      if ((replicationFactor - 1) / 2 < regionNumReplicas) {
+        multiRegion = false;
+      }
     }
+  });
 
-    return (
-      <div>
-        <span className={statusTypes[currentStatusType].currentStatusClass}>
-          &nbsp;
-          <i className={statusTypes[currentStatusType].currentStatusIcon} />
-          &nbsp;{statusTypes[currentStatusType].currentStatusString}
-        </span>
-      </div>
-    );
+
+  if (placementInfo.error) {
+    currentStatusType = placementInfo.error.type;
+  } else if (replicationFactor === 1) {
+    currentStatusType = 'singleRF';
+  } else if (multiRegion) {
+    currentStatusType = 'multiRegion';
+  } else if (multiAz) {
+    currentStatusType = 'regionWarning';
+  } else {
+    currentStatusType = 'azWarning';
   }
+
+  return (
+    <div>
+      <span className={statusTypes[currentStatusType].currentStatusClass}>
+        &nbsp;
+        <i className={statusTypes[currentStatusType].currentStatusIcon} />
+        &nbsp;{statusTypes[currentStatusType].currentStatusString}
+      </span>
+    </div>
+  );
 }
+
+AZPlacementInfo.propTypes = {
+  placementInfo: PropTypes.object.isRequired
+};

@@ -4,7 +4,7 @@ import React from 'react';
 
 import { ReleaseListContainer } from '../components/releases';
 
-const Releases = () => {
+export const Releases = () => {
   return (
     <div className="dashboard-container">
       <ReleaseListContainer />

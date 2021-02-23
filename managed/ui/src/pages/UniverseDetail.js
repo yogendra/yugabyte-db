@@ -4,7 +4,7 @@ import React from 'react';
 
 import { UniverseDetailContainer } from '../components/universes';
 
-const UniverseDetail = (props) => {
+export const UniverseDetail = (props) => {
   return (
     <div>
       <UniverseDetailContainer uuid={props.params.uuid} {...props} />

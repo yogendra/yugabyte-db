@@ -1,20 +1,41 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as BulkImport } from './BulkImport/BulkImport';
-export { default as BulkImportContainer } from './BulkImport/BulkImportContainer';
-export { default as ListTables } from './ListTables/ListTables';
-export { default as ListTablesContainer } from './ListTables/ListTablesContainer';
-export { default as TableDetail } from './TableDetail/TableDetail';
-export { default as TableDetailContainer } from './TableDetail/TableDetailContainer';
-export { default as TableSchema } from './TableSchema/TableSchema';
-export { default as ListBackups } from './ListBackups/ListBackups';
-export { default as ListBackupsContainer } from './ListBackups/ListBackupsContainer';
-export { default as Replication } from './Replication/Replication';
-export { default as ReplicationContainer } from './Replication/ReplicationContainer';
-export { default as TableAction } from './TableAction/TableAction';
-export { default as CreateBackup } from './CreateBackup/CreateBackup';
-export { default as CreateBackupContainer } from './CreateBackup/CreateBackupContainer';
-export { default as RestoreBackup } from './RestoreBackup/RestoreBackup';
-export { default as RestoreBackupContainer } from './RestoreBackup/RestoreBackupContainer';
-export { default as DeleteBackup } from './DeleteBackup/DeleteBackup';
-export { default as DeleteBackupContainer } from './DeleteBackup/DeleteBackupContainer';
+import { BulkImport } from './BulkImport/BulkImport';
+import BulkImportContainer from './BulkImport/BulkImportContainer';
+import { ListTables } from './ListTables/ListTables';
+import ListTablesContainer from './ListTables/ListTablesContainer';
+import { TableDetail } from './TableDetail/TableDetail';
+import TableDetailContainer from './TableDetail/TableDetailContainer';
+import { TableSchema } from './TableSchema/TableSchema';
+import { ListBackups } from './ListBackups/ListBackups';
+import ListBackupsContainer from './ListBackups/ListBackupsContainer';
+import { Replication } from './Replication/Replication';
+import ReplicationContainer from './Replication/ReplicationContainer';
+import { TableAction } from './TableAction/TableAction';
+import { CreateBackup } from './CreateBackup/CreateBackup';
+import CreateBackupContainer from './CreateBackup/CreateBackupContainer';
+import { RestoreBackup } from './RestoreBackup/RestoreBackup';
+import RestoreBackupContainer from './RestoreBackup/RestoreBackupContainer';
+import { DeleteBackup } from './DeleteBackup/DeleteBackup';
+import DeleteBackupContainer from './DeleteBackup/DeleteBackupContainer';
+
+export {
+  BulkImport,
+  BulkImportContainer,
+  ListTables,
+  ListTablesContainer,
+  TableDetail,
+  TableDetailContainer,
+  TableSchema,
+  ListBackups,
+  ListBackupsContainer,
+  Replication,
+  ReplicationContainer,
+  TableAction,
+  CreateBackup,
+  CreateBackupContainer,
+  RestoreBackup,
+  RestoreBackupContainer,
+  DeleteBackup,
+  DeleteBackupContainer,
+}

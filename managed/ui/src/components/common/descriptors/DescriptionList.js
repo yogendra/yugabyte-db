@@ -6,7 +6,7 @@ import { isNonEmptyString } from '../../../utils/ObjectUtils';
 
 import './stylesheets/DescriptionList.css';
 
-const DescriptionList = ({ listItems, type, className }) => {
+export const DescriptionList = ({ listItems, type, className }) => {
   const classNameResult = 'dl-' + type + (className ? ' ' + className : '');
 
   const descriptionListItems = listItems.map(function (item, idx) {
@@ -42,5 +42,3 @@ DescriptionList.propTypes = {
 DescriptionList.defaultProps = {
   type: 'normal'
 };
-
-export default DescriptionList;

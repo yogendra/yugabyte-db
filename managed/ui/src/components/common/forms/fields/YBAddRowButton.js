@@ -3,7 +3,7 @@
 import React from 'react';
 import { YBButton } from './';
 
-const YBAddRowButton = ({ onClick, btnText, ...props }) => (
+export const YBAddRowButton = ({ onClick, btnText, ...props }) => (
   <YBButton
     btnClass="yb-add-button"
     btnIcon="fa fa-plus"
@@ -12,5 +12,3 @@ const YBAddRowButton = ({ onClick, btnText, ...props }) => (
     {...props}
   />
 );
-
-export default YBAddRowButton;

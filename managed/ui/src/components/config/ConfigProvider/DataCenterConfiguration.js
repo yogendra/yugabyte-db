@@ -20,7 +20,7 @@ import tanzuLogo from './images/tanzu.png';
 import gcpLogo from './images/gcp.png';
 import { isAvailable, showOrRedirect } from '../../../utils/LayoutUtils';
 
-const DataCenterConfiguration = ({
+export const DataCenterConfiguration = withRouter(({
  customer: { currentCustomer },
  params: { tab, section },
  params
@@ -151,5 +151,4 @@ const DataCenterConfiguration = ({
       </YBTabsPanel>
     </div>
   );
-}
-export default withRouter(DataCenterConfiguration);
+})

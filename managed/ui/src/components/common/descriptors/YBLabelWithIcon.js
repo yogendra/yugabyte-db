@@ -3,7 +3,7 @@
 import React  from 'react';
 import PropTypes from 'prop-types';
 
-const YBLabelWithIcon = ({ icon, children }) => {
+export const YBLabelWithIcon = ({ icon, children }) => {
   return (
     <span>
       {icon && <i className={icon} />}
@@ -15,5 +15,3 @@ const YBLabelWithIcon = ({ icon, children }) => {
 YBLabelWithIcon.propTypes = {
   icon: PropTypes.string
 };
-
-export default YBLabelWithIcon;

@@ -5,19 +5,18 @@ import { YBModal } from '../../common/forms/fields';
 import PropTypes from 'prop-types';
 import { isNonEmptyObject } from '../../../utils/ObjectUtils';
 
-export default class DeleteBackup extends Component {
-  static propTypes = {
-    tableInfo: PropTypes.object
-  };
+export const DeleteBackup = (
+  {
+    tableInfo: { backupUUID },
+    deleteBackup,
+    onHide,
+    onSubmit,
+    onError,
+    visible
+  }
+) => {
 
-  confirmDeleteBackup = async () => {
-    const {
-      tableInfo: { backupUUID },
-      deleteBackup,
-      onHide,
-      onSubmit,
-      onError
-    } = this.props;
+  const confirmDeleteBackup = async () => {
     try {
       const response = await deleteBackup(backupUUID);
       onSubmit(response.data);
@@ -29,28 +28,27 @@ export default class DeleteBackup extends Component {
     onHide();
   };
 
-  render() {
-    if (!isNonEmptyObject(this.props.tableInfo)) {
-      return <span />;
-    }
-    const {
-      visible,
-      onHide,
-    } = this.props;
 
-    return (
-      <div className="universe-apps-modal">
-        <YBModal
-          title={'Delete Backup'}
-          visible={visible}
-          onHide={onHide}
-          showCancelButton={true}
-          cancelLabel={'Cancel'}
-          onFormSubmit={this.confirmDeleteBackup}
-        >
-          Are you sure you want to delete this backup?
-        </YBModal>
-      </div>
-    );
+  if (!isNonEmptyObject(this.props.tableInfo)) {
+    return <span />;
   }
+
+  return (
+    <div className="universe-apps-modal">
+      <YBModal
+        title={'Delete Backup'}
+        visible={visible}
+        onHide={onHide}
+        showCancelButton={true}
+        cancelLabel={'Cancel'}
+        onFormSubmit={confirmDeleteBackup}
+      >
+        Are you sure you want to delete this backup?
+      </YBModal>
+    </div>
+  );
 }
+
+DeleteBackup.propTypes = {
+  tableInfo: PropTypes.object
+};

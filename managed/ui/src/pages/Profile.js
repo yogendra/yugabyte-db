@@ -4,7 +4,7 @@ import React from 'react';
 
 import { CustomerProfileContainer } from '../components/profile';
 
-const Profile = (props) => {
+export const Profile = (props) => {
   return (
     <div className="dashboard-container">
       <CustomerProfileContainer {...props} />

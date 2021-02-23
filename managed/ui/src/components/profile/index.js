@@ -1,8 +1,10 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as CustomerProfile } from './CustomerProfile';
-export { default as CustomerProfileContainer } from './CustomerProfileContainer';
+import { CustomerProfile } from './CustomerProfile';
+import CustomerProfileContainer from './CustomerProfileContainer';
 
-export { default as UserProfileForm } from './UserProfileForm';
-export { default as AlertProfileForm } from './AlertProfileForm';
-export { default as UserList } from './UserList';
+import { UserProfileForm } from './UserProfileForm';
+import { AlertProfileForm } from './AlertProfileForm';
+import { UserList } from './UserList';
+
+export { CustomerProfile, CustomerProfileContainer, UserProfileForm, AlertProfileForm, UserList }

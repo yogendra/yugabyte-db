@@ -1,12 +1,12 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, {Component, useEffect} from 'react';
+import React, {useEffect} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { showOrRedirect } from '../../../utils/LayoutUtils';
 import { alertTypeFormatter } from '../../../utils/TableFormatters';
 import { YBPanelItem } from '../../panels';
 
-const AlertsList = ({ customer: { currentCustomer, alerts }, getAlertsList }) => {
+export const AlertsList = ({ customer: { currentCustomer, alerts }, getAlertsList }) => {
 
   useEffect(() => {
     getAlertsList()
@@ -67,5 +67,3 @@ const AlertsList = ({ customer: { currentCustomer, alerts }, getAlertsList }) =>
     </div>
   );
 }
-
-export default AlertsList;

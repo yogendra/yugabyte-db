@@ -1,7 +1,7 @@
 // Copyright (c) YugaByte, Inc.
 
 import { connect } from 'react-redux';
-import Replication from './Replication';
+import { Replication } from './Replication';
 import {
   queryMetrics,
   queryMetricsSuccess,

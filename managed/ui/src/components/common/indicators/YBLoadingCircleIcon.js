@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 import './stylesheets/YBLoadingIcon.scss';
 
-const YBLoadingCircleIcon = ({ size }) => {
+export const YBLoadingCircleIcon = ({ size }) => {
   const className = `yb-loader-circle ${(size ? `yb-loader-circle-${size}` : '')}`;
   return (
     <div className={className}>
@@ -28,5 +28,3 @@ const YBLoadingCircleIcon = ({ size }) => {
 YBLoadingCircleIcon.propTypes = {
   size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'inline'])
 };
-
-export default YBLoadingCircleIcon;

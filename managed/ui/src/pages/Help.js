@@ -3,7 +3,7 @@
 import React from 'react';
 import HelpItemContainer from '../components/help/HelpItem/HelpItemContainer';
 
-const Help = () => {
+export const Help = () => {
   return (
     <div>
       <HelpItemContainer />

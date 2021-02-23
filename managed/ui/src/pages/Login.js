@@ -3,7 +3,7 @@
 import React from 'react';
 import LoginFormContainer from '../components/common/forms/LoginForm/LoginFormContainer';
 
-const Login = () => {
+export const Login = () => {
   return <LoginFormContainer />;
 };
 

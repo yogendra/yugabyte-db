@@ -1,13 +1,13 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, {Component, useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import { isObject } from 'lodash';
 import { isNonEmptyArray, isDefinedNotNull } from '../../../../utils/ObjectUtils';
-import YBFormRadioButton from './YBFormRadioButton';
+import { YBFormRadioButton } from './YBFormRadioButton';
 import { YBLabel } from '../../descriptors';
 import { Field } from 'formik';
 
-const YBRadioButtonGroupDefault = ({ field, name, segmented, options, ...props }) => {
+export const YBRadioButtonGroupDefault = ({ field, name, segmented, options, ...props }) => {
   return (
     <div
       className={'btn-group btn-group-radio' + (segmented ? ' btn-group-segmented' : '')}
@@ -40,7 +40,7 @@ const YBRadioButtonGroupDefault = ({ field, name, segmented, options, ...props }
   );
 }
 
-const YBRadioButtonGroup = ({ label, meta, type, ...otherProps }) => {
+export const YBRadioButtonGroup = ({ label, meta, type, ...otherProps }) => {
   if (isDefinedNotNull(label)) {
     return (
       <YBLabel label={label} meta={meta}>
@@ -52,7 +52,7 @@ const YBRadioButtonGroup = ({ label, meta, type, ...otherProps }) => {
   }
 }
 
-const YBSegmentedButtonGroup = ({ label, meta, type, ...otherProps }) => {
+export const YBSegmentedButtonGroup = ({ label, meta, type, ...otherProps }) => {
   if (isDefinedNotNull(label)) {
     return (
       <YBLabel label={label} meta={meta}>
@@ -65,7 +65,7 @@ const YBSegmentedButtonGroup = ({ label, meta, type, ...otherProps }) => {
 }
 
 
-const YBRadioButtonLine = ({ onSelect, options, label, meta, ...otherProps }) => {
+export const YBRadioButtonLine = ({ onSelect, options, label, meta, ...otherProps }) => {
   const radioList = useRef();
   const [selectedOption, setSelectedOption] = useState(null);
   const [lineStyle, setLineStyle] = useState({});
@@ -122,12 +122,4 @@ const YBRadioButtonLine = ({ onSelect, options, label, meta, ...otherProps }) =>
       <div className={'connecting-line'} style={lineStyle} />
     </YBLabel>
   );
-}
-
-export default YBRadioButtonGroup;
-
-export {
-  YBRadioButtonGroup,
-  YBSegmentedButtonGroup,
-  YBRadioButtonLine
 }

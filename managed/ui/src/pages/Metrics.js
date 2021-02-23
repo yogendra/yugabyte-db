@@ -5,7 +5,7 @@ import React, {useState} from 'react';
 import { CustomerMetricsPanelContainer } from '../components/metrics';
 import Measure from 'react-measure';
 
-const Metrics = () => {
+export const Metrics = () => {
   const [dimensions, setDimensions] = useState({});
   return (
     <Measure onMeasure={setDimensions}>

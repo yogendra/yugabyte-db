@@ -14,13 +14,13 @@ import { isKubernetesUniverse } from '../../../utils/UniverseUtils';
 import { FlexContainer, FlexGrow, FlexShrink } from '../../common/flexbox/YBFlexBox';
 import { isEnabled } from '../../../utils/LayoutUtils';
 
-export default class UniverseOverview extends Component {
-  hasReadReplica = (universeInfo) => {
+export const UniverseOverview = ({ currentUniverse, width, currentCustomer }) => {
+  const hasReadReplica = (universeInfo) => {
     const clusters = universeInfo.universeDetails.clusters;
     return clusters.some((cluster) => cluster.clusterType === 'ASYNC');
   };
 
-  getRegionMapWidget = (currentUniverse) => {
+  const getRegionMapWidget = (currentUniverse) => {
     const universeInfo = currentUniverse.data;
     const universeResources = universeInfo.resources;
     let numNodes = 0;
@@ -49,7 +49,7 @@ export default class UniverseOverview extends Component {
       />
     );
 
-    if (this.hasReadReplica(universeInfo)) {
+    if (hasReadReplica(universeInfo)) {
       return (
         <Col lg={12} xs={12}>
           {mapWidget}
@@ -64,8 +64,8 @@ export default class UniverseOverview extends Component {
     }
   };
 
-  getInfoWidgets = (universeInfo) => {
-    const hasReadReplica = this.hasReadReplica(universeInfo);
+  const getInfoWidgets = (universeInfo) => {
+    const hasReadReplica = hasReadReplica(universeInfo);
     const infoWidgets = [
       <YBWidget
         headerLeft={'Resource Info'}
@@ -113,54 +113,52 @@ export default class UniverseOverview extends Component {
     }
   };
 
-  render() {
-    const { currentUniverse, width, currentCustomer } = this.props;
 
-    const universeInfo = currentUniverse.data;
-    const universeResources = universeInfo.resources;
-    const nodePrefixes = [universeInfo.universeDetails.nodePrefix];
 
-    return (
-      <YBPanelItem
-        noBackground
-        header={
-          <FlexContainer>
-            <FlexGrow>
-              <UniverseResources
-                split="left"
-                resources={universeResources}
-                renderType={'Display'}
-              />
-            </FlexGrow>
-            {isEnabled(currentCustomer.data.features, 'universes.details.overview.costs') && (
-              <FlexShrink>
-                <div className="operating-costs">
-                  <UniverseResources
-                    split="right"
-                    resources={universeResources}
-                    renderType={'Display'}
-                  />
-                </div>
-              </FlexShrink>
-            )}
-          </FlexContainer>
-        }
-        body={
-          <div>
-            <Row>
-              {this.getInfoWidgets(universeInfo)}
-              {this.getRegionMapWidget(currentUniverse)}
-              <OverviewMetricsContainer
-                universeUuid={universeInfo.universeUUID}
-                type={'overview'}
-                origin={'universe'}
-                width={width}
-                nodePrefixes={nodePrefixes}
-              />
-            </Row>
-          </div>
-        }
-      />
-    );
-  }
+  const universeInfo = currentUniverse.data;
+  const universeResources = universeInfo.resources;
+  const nodePrefixes = [universeInfo.universeDetails.nodePrefix];
+
+  return (
+    <YBPanelItem
+      noBackground
+      header={
+        <FlexContainer>
+          <FlexGrow>
+            <UniverseResources
+              split="left"
+              resources={universeResources}
+              renderType={'Display'}
+            />
+          </FlexGrow>
+          {isEnabled(currentCustomer.data.features, 'universes.details.overview.costs') && (
+            <FlexShrink>
+              <div className="operating-costs">
+                <UniverseResources
+                  split="right"
+                  resources={universeResources}
+                  renderType={'Display'}
+                />
+              </div>
+            </FlexShrink>
+          )}
+        </FlexContainer>
+      }
+      body={
+        <div>
+          <Row>
+            {getInfoWidgets(universeInfo)}
+            {getRegionMapWidget(currentUniverse)}
+            <OverviewMetricsContainer
+              universeUuid={universeInfo.universeUUID}
+              type={'overview'}
+              origin={'universe'}
+              width={width}
+              nodePrefixes={nodePrefixes}
+            />
+          </Row>
+        </div>
+      }
+    />
+  );
 }

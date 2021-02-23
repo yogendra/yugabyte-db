@@ -11,7 +11,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { isNotHidden, isDisabled } from '../../../utils/LayoutUtils';
 import { clearCredentials } from '../../../routes';
 
-const YBMenuItem = ({ disabled, to, id, className, onClick, children })  => {
+export const YBMenuItem = ({ disabled, to, id, className, onClick, children })  => {
   if (disabled) {
     return (
       <li>
@@ -29,7 +29,7 @@ const YBMenuItem = ({ disabled, to, id, className, onClick, children })  => {
   );
 }
 
-const TopNavBar = ({ logoutProfile, customer: { currentCustomer } }) => {
+export const TopNavBar = ({ logoutProfile, customer: { currentCustomer } }) => {
   const handleLogout = (event) => {
     clearCredentials();
     logoutProfile();
@@ -95,5 +95,3 @@ const TopNavBar = ({ logoutProfile, customer: { currentCustomer } }) => {
     </Navbar>
   );
 }
-
-export default TopNavBar;

@@ -50,7 +50,7 @@ const YBDropZoneWithLabel  = (
   }
 ) => {
   const onDrop = (file, e) => {
-    this.props.input.onChange(file[0]);
+    input.onChange(file[0]);
   };
   const { touched, error } = meta;
   return (

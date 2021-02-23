@@ -1,6 +1,6 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
 import { Panel } from 'react-bootstrap';
 import { MetricsPanel } from '../../metrics';
@@ -14,6 +14,7 @@ import {
   isNonEmptyString
 } from '../../../utils/ObjectUtils';
 import { isKubernetesUniverse } from '../../../utils/UniverseUtils';
+import {useComponentDidUpdate} from "../../../hooks/useComponentDidUpdate";
 
 const panelTypes = {
   container: {
@@ -196,30 +197,32 @@ const panelTypes = {
   }
 };
 
-class GraphPanel extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isOpen: false, ...this.props };
+export const GraphPanel = (
+  {
+    type,
+    selectedUniverse,
+    insecureLoginToken,
+    graph: { metrics, graphFilter },
+    nodePrefixes,
+    tableName,
+    resetMetrics,
+    queryMetrics,
+    width,
+    eventKey,
+    graph
   }
+) =>  {
+  const [isOpen, setIsOpen] = useState(false);
+  const [prevGraph, setPrevGraph] = useState(graph);
 
-  static propTypes = {
-    type: PropTypes.oneOf(Object.keys(panelTypes)).isRequired,
-    nodePrefixes: PropTypes.array
-  };
-
-  static defaultProps = {
-    nodePrefixes: []
-  };
-
-  componentDidMount() {
-    if (this.state.isOpen) {
-      this.queryMetricsType(this.props.graph.graphFilter);
+  useEffect(()=> {
+    if(isOpen) {
+      queryMetricsType(graphFilter);
     }
-  }
+  }, []);
 
-  queryMetricsType = (graphFilter) => {
+  const queryMetricsType = (graphFilter) => {
     const { startMoment, endMoment, nodeName, nodePrefix } = graphFilter;
-    const { type } = this.props;
     const params = {
       metrics: panelTypes[type].metrics,
       start: startMoment.format('X'),
@@ -232,116 +235,102 @@ class GraphPanel extends Component {
       params.nodeName = nodeName;
     }
     // In case of universe metrics , nodePrefix comes from component itself
-    if (isNonEmptyArray(this.props.nodePrefixes)) {
-      params.nodePrefix = this.props.nodePrefixes[0];
+    if (isNonEmptyArray(nodePrefixes)) {
+      params.nodePrefix = nodePrefixes[0];
     }
-    if (isNonEmptyString(this.props.tableName)) {
-      params.tableName = this.props.tableName;
+    if (isNonEmptyString(tableName)) {
+      params.tableName = tableName;
     }
-    this.props.queryMetrics(params, type);
+    queryMetrics(params, type);
   };
 
-  componentWillUnmount() {
-    this.props.resetMetrics();
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    // Perform metric query only if the graph filter has changed.
-    // TODO: add the nodePrefixes to the queryParam
-    if (prevProps.graph.graphFilter !== this.props.graph.graphFilter) {
-      if (this.state.isOpen) {
-        this.queryMetricsType(this.props.graph.graphFilter);
+  useComponentDidUpdate(()=> {
+    if (prevGraph.graphFilter !== graphFilter) {
+      if (isOpen) {
+        queryMetricsType(graphFilter);
       }
     }
 
-    const {
-      type,
-      graph: { metrics }
-    } = this.props;
-    if (
-      !prevState.isOpen &&
-      this.state.isOpen &&
+    if (isOpen &&
       (Object.keys(metrics).length === 0 || isEmptyObject(metrics[type]))
     ) {
-      this.queryMetricsType(this.props.graph.graphFilter);
+      queryMetricsType(graphFilter);
     }
-  }
+  }, [])
 
-  render() {
-    const {
-      type,
-      selectedUniverse,
-      insecureLoginToken,
-      graph: { metrics }
-    } = this.props;
 
-    let panelData = <YBLoading />;
+  let panelData = <YBLoading />;
 
-    if (
-      insecureLoginToken &&
-      !(type === 'ycql_ops' || type === 'ysql_ops' || type === 'yedis_ops')
-    ) {
-      panelData = (
-        <div className="oss-unavailable-warning">Only available on Yugabyte Platform.</div>
-      );
-    } else {
-      if (Object.keys(metrics).length > 0 && isNonEmptyObject(metrics[type])) {
-        /* Logic here is, since there will be multiple instances of GraphPanel
-        we basically would have metrics data keyed off panel type. So we
-        loop through all the possible panel types in the metric data fetched
-        and group metrics by panel type and filter out anything that is empty.
-        */
-        const width = this.props.width;
-        panelData = panelTypes[type].metrics
-          .map(function (metricKey, idx) {
-            return isNonEmptyObject(metrics[type][metricKey]) && !metrics[type][metricKey].error ? (
-              <MetricsPanel
-                metricKey={metricKey}
-                key={idx}
-                metric={metrics[type][metricKey]}
-                className={'metrics-panel-container'}
-                containerWidth={width}
-              />
-            ) : null;
-          })
-          .filter(Boolean);
-      }
-      const invalidPanelType =
-        selectedUniverse && isKubernetesUniverse(selectedUniverse)
-          ? panelTypes[type].title === 'Node'
-          : panelTypes[type].title === 'Container';
-      if (invalidPanelType) {
-        return null;
-      }
-
-      if (isEmptyArray(panelData)) {
-        panelData = 'Error receiving response from Graph Server';
-      }
-    }
-
-    return (
-      <Panel
-        id={panelTypes[type].title}
-        key={panelTypes[type]}
-        eventKey={this.props.eventKey}
-        defaultExpanded={this.state.isOpen}
-        className="metrics-container"
-      >
-        <Panel.Heading>
-          <Panel.Title
-            tag="h4"
-            toggle
-            onClick={() => {
-              this.setState({ isOpen: !this.state.isOpen });
-            }}
-          >
-            {panelTypes[type].title}
-          </Panel.Title>
-        </Panel.Heading>
-        <Panel.Body collapsible>{panelData}</Panel.Body>
-      </Panel>
+  if (
+    insecureLoginToken &&
+    !(type === 'ycql_ops' || type === 'ysql_ops' || type === 'yedis_ops')
+  ) {
+    panelData = (
+      <div className="oss-unavailable-warning">Only available on Yugabyte Platform.</div>
     );
+  } else {
+    if (Object.keys(metrics).length > 0 && isNonEmptyObject(metrics[type])) {
+      /* Logic here is, since there will be multiple instances of GraphPanel
+      we basically would have metrics data keyed off panel type. So we
+      loop through all the possible panel types in the metric data fetched
+      and group metrics by panel type and filter out anything that is empty.
+      */
+      panelData = panelTypes[type].metrics
+        .map(function (metricKey, idx) {
+          return isNonEmptyObject(metrics[type][metricKey]) && !metrics[type][metricKey].error ? (
+            <MetricsPanel
+              metricKey={metricKey}
+              key={idx}
+              metric={metrics[type][metricKey]}
+              className={'metrics-panel-container'}
+              containerWidth={width}
+            />
+          ) : null;
+        })
+        .filter(Boolean);
+    }
+    const invalidPanelType =
+      selectedUniverse && isKubernetesUniverse(selectedUniverse)
+        ? panelTypes[type].title === 'Node'
+        : panelTypes[type].title === 'Container';
+    if (invalidPanelType) {
+      return null;
+    }
+
+    if (isEmptyArray(panelData)) {
+      panelData = 'Error receiving response from Graph Server';
+    }
   }
+
+  return (
+    <Panel
+      id={panelTypes[type].title}
+      key={panelTypes[type]}
+      eventKey={eventKey}
+      defaultExpanded={isOpen}
+      className="metrics-container"
+    >
+      <Panel.Heading>
+        <Panel.Title
+          tag="h4"
+          toggle
+          onClick={() => {
+            setIsOpen(!isOpen)
+          }}
+        >
+          {panelTypes[type].title}
+        </Panel.Title>
+      </Panel.Heading>
+      <Panel.Body collapsible>{panelData}</Panel.Body>
+    </Panel>
+  );
 }
 
-export default GraphPanel;
+GraphPanel.propTypes = {
+  type: PropTypes.oneOf(Object.keys(panelTypes)).isRequired,
+  nodePrefixes: PropTypes.array
+};
+
+GraphPanel.defaultProps = {
+  nodePrefixes: []
+};

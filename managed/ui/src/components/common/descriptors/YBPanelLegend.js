@@ -4,7 +4,7 @@ import React from 'react';
 
 import './stylesheets/YBPanelLegend.scss';
 
-const YBPanelLegend = ({ data }) =>{
+export const YBPanelLegend = ({ data }) =>{
   return (
     <div className="panel-legend">
       {data.map((item, index) => (
@@ -16,5 +16,3 @@ const YBPanelLegend = ({ data }) =>{
     </div>
   );
 }
-
-export default YBPanelLegend;

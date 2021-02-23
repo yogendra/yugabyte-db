@@ -26,10 +26,10 @@ import {
   YBControlledNumericInputWithLabel
 } from '../../../components/common/forms/fields';
 import { getPromiseState } from '../../../utils/PromiseUtils';
-import AZSelectorTable from './AZSelectorTable';
+import { AZSelectorTable } from './AZSelectorTable';
 import './UniverseForm.scss';
-import AZPlacementInfo from './AZPlacementInfo';
-import GFlagArrayComponent from './GFlagArrayComponent';
+import { AZPlacementInfo } from './AZPlacementInfo';
+import { GFlagArrayComponent } from './GFlagArrayComponent';
 import {
   getPrimaryCluster,
   getReadOnlyCluster,

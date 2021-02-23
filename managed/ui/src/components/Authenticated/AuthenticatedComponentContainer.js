@@ -1,7 +1,7 @@
 // Copyright (c) YugaByte, Inc.
 
 import { connect } from 'react-redux';
-import AuthenticatedComponent from './AuthenticatedComponent';
+import { AuthenticatedComponent } from './AuthenticatedComponent';
 import {
   fetchUniverseList,
   fetchUniverseListResponse,

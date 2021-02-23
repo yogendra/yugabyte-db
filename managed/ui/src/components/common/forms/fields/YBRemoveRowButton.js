@@ -3,7 +3,7 @@
 import React from 'react';
 import { YBButton } from './';
 
-const YBRemoveRowButton = ({ onClick, ...props }) => (
+export const YBRemoveRowButton = ({ onClick, ...props }) => (
   <YBButton
     btnClass="btn btn-xs yb-remove-button"
     btnIcon="fa fa-remove"
@@ -11,5 +11,3 @@ const YBRemoveRowButton = ({ onClick, ...props }) => (
     {...props}
   />
 );
-
-export default YBRemoveRowButton;

@@ -2,7 +2,7 @@
 
 import { connect } from 'react-redux';
 
-import NavBar from './NavBar';
+import { NavBar } from './NavBar';
 import { logout, logoutSuccess, logoutFailure } from '../../../actions/customers';
 
 const mapDispatchToProps = (dispatch) => {

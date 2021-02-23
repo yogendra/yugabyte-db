@@ -8,7 +8,7 @@ import { YBLabel, DescriptionItem } from '../../../../components/common/descript
 import 'react-toggle/style.css';
 import './stylesheets/YBToggle.scss';
 
-const YBToggle = (
+export const YBToggle = (
   {
     input,
     label,
@@ -64,5 +64,3 @@ YBToggle.defaultProps = {
   checkedVal: true,
   disableOnChange: false
 };
-
-export default YBToggle;

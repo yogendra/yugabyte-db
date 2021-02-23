@@ -8,7 +8,7 @@ import './stylesheets/SideNavBar.scss';
 import { getPromiseState } from '../../../utils/PromiseUtils';
 import { isHidden, isNotHidden, getFeatureState } from '../../../utils/LayoutUtils';
 
-const NavLink = withRouter(({ router, display, index, to, icon, text, ...props }) => {
+export const NavLink = withRouter(({ router, display, index, to, icon, text, ...props }) => {
 
   // Added by withRouter in React Router 3.0.
   delete props.params;
@@ -36,7 +36,7 @@ const NavLink = withRouter(({ router, display, index, to, icon, text, ...props }
   );
 })
 
-const SideNavBar = ({ customer: { currentCustomer }}) => {
+export const SideNavBar = ({ customer: { currentCustomer }}) => {
   // Add check for initial state of `currentCustomer` to avoid first load showing the sidebar
   // Just in case we are on cloud and don't want to cause visual flicker
   if (
@@ -167,5 +167,3 @@ const SideNavBar = ({ customer: { currentCustomer }}) => {
     </div>
   );
 }
-
-export default SideNavBar;

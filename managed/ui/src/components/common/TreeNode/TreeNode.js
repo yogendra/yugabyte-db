@@ -5,7 +5,7 @@ import { Collapse } from 'react-bootstrap';
 
 import './TreeNode.scss';
 
-const TreeNode = ({ defaultExpanded, header, body }) => {
+export const TreeNode = ({ defaultExpanded, header, body }) => {
   const [open, setOpen] = useState(defaultExpanded);
 
   const toggleOpen = () => { setOpen(!open) };
@@ -24,5 +24,3 @@ const TreeNode = ({ defaultExpanded, header, body }) => {
     </div>
   );
 }
-
-export default TreeNode;

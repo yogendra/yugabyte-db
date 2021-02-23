@@ -4,7 +4,7 @@ import React from 'react';
 
 import { ImporterContainer } from '../components/importer';
 
-const Importer = () =>{
+export const Importer = () =>{
   return (
     <div className="dashboard-container">
       <ImporterContainer />

@@ -9,7 +9,7 @@ import './stylesheets/YBModal.scss';
 const ENTER_KEY_CODE = 13;
 const ESC_KEY_CODE = 27;
 
-const YBModal =
+export const YBModal =
   (
     {
       visible,
@@ -117,5 +117,3 @@ YBModal.defaultProps = {
   cancelLabel: 'Cancel',
   showCancelButton: false
 };
-
-export default YBModal;

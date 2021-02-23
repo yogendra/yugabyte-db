@@ -1,8 +1,8 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {useEffect, useState} from 'react';
 import PropTypes from 'prop-types';
-import { MetricsPanelOverview } from '../';
+import { MetricsPanelOverview } from '../index';
 import './OverviewMetrics.scss';
 import { YBLoading } from '../../common/indicators';
 import {
@@ -35,28 +35,14 @@ const kubernetesMetrics = [
   'container_volume_max_usage'
 ];
 
-class OverviewMetrics extends Component {
-  static propTypes = {
-    type: PropTypes.oneOf(Object.keys(panelTypes)).isRequired,
-    nodePrefixes: PropTypes.array
-  };
-  static defaultProps = {
-    nodePrefixes: []
-  };
-  constructor(props) {
-    super(props);
-    const refreshMetrics =
-      localStorage.getItem('__yb_refresh_metrics__') != null &&
-      localStorage.getItem('__yb_refresh_metrics__') !== 'false';
-    this.state = {
-      autoRefresh: refreshMetrics
-    };
-  }
+export const OverviewMetrics = ({ type, currentCustomer,graph, nodePrefixes, tableName, resetMetrics, isKubernetesUniverse, queryMetrics}) => {
+  const refreshMetrics =
+    localStorage.getItem('__yb_refresh_metrics__') != null &&
+    localStorage.getItem('__yb_refresh_metrics__') !== 'false';
+  const [autoRefresh, setAutoRefresh] = useState(refreshMetrics);
+  let timeout;
 
-  componentDidMount() {
-    const { currentCustomer } = this.props;
-    const { autoRefresh } = this.state;
-    const self = this;
+  useEffect(()=> {
     const pollingInterval = getPromiseState(currentCustomer).isSuccess()
       ? getFeatureState(
         currentCustomer.data.features,
@@ -66,25 +52,32 @@ class OverviewMetrics extends Component {
       : OVERVIEW_METRICS_INTERVAL_MS;
 
     // set the polling for metrics but update start and end time interval boundaries
-    self.queryMetricsType({
-      ...self.props.graph.graphFilter,
+    queryMetricsType({
+      ...graph.graphFilter,
       startMoment: moment().subtract('1', 'hours'),
       endMoment: moment()
     });
     if (autoRefresh) {
-      this.timeout = setInterval(() => {
-        self.queryMetricsType({
-          ...self.props.graph.graphFilter,
+      timeout = setInterval(() => {
+        queryMetricsType({
+          ...graph.graphFilter,
           startMoment: moment().subtract('1', 'hours'),
           endMoment: moment()
         });
       }, pollingInterval);
     }
-  }
 
-  handleToggleRefresh = () => {
-    const { currentCustomer, graph } = this.props;
-    const { autoRefresh } = this.state;
+    return () => {
+      resetMetrics();
+      if (timeout !== undefined) {
+        clearInterval(timeout);
+        timeout = null;
+      }
+    }
+  }, []);
+
+
+  const handleToggleRefresh = () => {
     const pollingInterval = getPromiseState(currentCustomer).isSuccess()
       ? getFeatureState(
         currentCustomer.data.features,
@@ -94,25 +87,24 @@ class OverviewMetrics extends Component {
       : OVERVIEW_METRICS_INTERVAL_MS;
 
     // eslint-disable-next-line eqeqeq
-    if (!autoRefresh && this.timeout == undefined) {
-      this.timeout = setInterval(() => {
-        this.queryMetricsType({
+    if (!autoRefresh && timeout === undefined) {
+      timeout = setInterval(() => {
+        queryMetricsType({
           ...graph.graphFilter,
           startMoment: moment().subtract('1', 'hours'),
           endMoment: moment()
         });
       }, pollingInterval);
     } else {
-      clearInterval(this.timeout);
-      delete this.timeout;
+      clearInterval(timeout);
+      timeout = null
     }
     localStorage.setItem('__yb_refresh_metrics__', !autoRefresh);
-    this.setState({ autoRefresh: !autoRefresh });
+    setAutoRefresh(!autoRefresh)
   };
 
-  queryMetricsType = (graphFilter) => {
+  const queryMetricsType = (graphFilter) => {
     const { startMoment, endMoment, nodeName, nodePrefix } = graphFilter;
-    const { type, isKubernetesUniverse } = this.props;
     const params = {
       metrics: panelTypes[type].metrics,
       start: startMoment.format('X'),
@@ -125,15 +117,15 @@ class OverviewMetrics extends Component {
       params.nodeName = nodeName;
     }
     // In case of universe metrics , nodePrefix comes from component itself
-    if (isNonEmptyArray(this.props.nodePrefixes)) {
-      params.nodePrefix = this.props.nodePrefixes[0];
+    if (isNonEmptyArray(nodePrefixes)) {
+      params.nodePrefix = nodePrefixes[0];
     }
-    if (isNonEmptyString(this.props.tableName)) {
-      params.tableName = this.props.tableName;
+    if (isNonEmptyString(tableName)) {
+      params.tableName = tableName;
     }
-    this.props.queryMetrics(params, type);
+    queryMetrics(params, type);
     if (isKubernetesUniverse) {
-      this.props.queryMetrics(
+      queryMetrics(
         {
           ...params,
           metrics: kubernetesMetrics
@@ -143,120 +135,115 @@ class OverviewMetrics extends Component {
     }
   };
 
-  componentWillUnmount() {
-    this.props.resetMetrics();
-    // eslint-disable-next-line eqeqeq
-    if (this.timeout != undefined) {
-      clearInterval(this.timeout);
-      delete this.timeout;
-    }
-  }
 
-  render() {
-    const {
-      type,
-      graph: { metrics }
-    } = this.props;
-    const { autoRefresh } = this.state;
-    const metricKeys = panelTypes[type].metrics;
-    let panelItem = metricKeys
-      .filter((metricKey) => metricKey !== 'disk_usage' && metricKey !== 'cpu_usage')
-      .map(function (metricKey, idx) {
-        return <YBWidget key={type + idx} noMargin body={<YBLoading />} />;
-      });
-    if (Object.keys(metrics).length > 0 && isNonEmptyObject(metrics[type])) {
-      /* Logic here is, since there will be multiple instances of GraphPanel
-      we basically would have metrics data keyed off panel type. So we
-      loop through all the possible panel types in the metric data fetched
-      and group metrics by panel type and filter out anything that is empty.
-      */
-      panelItem = metricKeys
-        .map((metricKey, idx) => {
-          // skip disk_usage and cpu_usage due to separate widget
-          if (metricKey !== 'disk_usage' && metricKey !== 'cpu_usage') {
-            if (isNonEmptyObject(metrics[type][metricKey]) && !metrics[type][metricKey].error) {
-              const legendData = [];
-              for (let idx = 0; idx < metrics[type][metricKey].data.length; idx++) {
-                metrics[type][metricKey].data[idx].fill = 'tozeroy';
-                metrics[type][metricKey].data[idx].fillcolor = METRIC_COLORS[idx] + '10';
-                metrics[type][metricKey].data[idx].line = {
-                  color: METRIC_COLORS[idx],
-                  width: 1.5
-                };
-                legendData.push({
-                  color: METRIC_COLORS[idx],
-                  title: metrics[type][metricKey].data[idx].name
-                });
-              }
-              const metricTickSuffix = _.get(metrics[type][metricKey], 'layout.yaxis.ticksuffix');
-              const measureUnit = metricTickSuffix
-                ? ` (${metricTickSuffix.replace('&nbsp;', '')})`
-                : '';
-              return (
-                <YBWidget
-                  key={idx}
-                  noMargin
-                  headerRight={
-                    metricKey === 'disk_usage' ? null : <YBPanelLegend data={legendData} />
-                  }
-                  headerLeft={
-                    <div className="metric-title">
-                      <span>{metrics[type][metricKey].layout.title + measureUnit}</span>
-                      <i
-                        className={autoRefresh ? 'fa fa-pause' : 'fa fa-refresh'}
-                        title={
-                          autoRefresh
-                            ? 'Click to pause auto-refresh'
-                            : 'Click to enable auto-refresh'
-                        }
-                        onClick={this.handleToggleRefresh}
-                      ></i>
-                    </div>
-                  }
-                  body={
-                    <MetricsPanelOverview
-                      metricKey={metricKey}
-                      metric={metrics[type][metricKey]}
-                      className={'metrics-panel-container'}
-                    />
-                  }
-                />
-              );
+  const { metrics } = graph;
+  const metricKeys = panelTypes[type].metrics;
+  let panelItem = metricKeys
+    .filter((metricKey) => metricKey !== 'disk_usage' && metricKey !== 'cpu_usage')
+    .map(function (metricKey, idx) {
+      return <YBWidget key={type + idx} noMargin body={<YBLoading />} />;
+    });
+  if (Object.keys(metrics).length > 0 && isNonEmptyObject(metrics[type])) {
+    /* Logic here is, since there will be multiple instances of GraphPanel
+    we basically would have metrics data keyed off panel type. So we
+    loop through all the possible panel types in the metric data fetched
+    and group metrics by panel type and filter out anything that is empty.
+    */
+    panelItem = metricKeys
+      .map((metricKey, idx) => {
+        // skip disk_usage and cpu_usage due to separate widget
+        if (metricKey !== 'disk_usage' && metricKey !== 'cpu_usage') {
+          if (isNonEmptyObject(metrics[type][metricKey]) && !metrics[type][metricKey].error) {
+            const legendData = [];
+            for (let idx = 0; idx < metrics[type][metricKey].data.length; idx++) {
+              metrics[type][metricKey].data[idx].fill = 'tozeroy';
+              metrics[type][metricKey].data[idx].fillcolor = METRIC_COLORS[idx] + '10';
+              metrics[type][metricKey].data[idx].line = {
+                color: METRIC_COLORS[idx],
+                width: 1.5
+              };
+              legendData.push({
+                color: METRIC_COLORS[idx],
+                title: metrics[type][metricKey].data[idx].name
+              });
             }
+            const metricTickSuffix = _.get(metrics[type][metricKey], 'layout.yaxis.ticksuffix');
+            const measureUnit = metricTickSuffix
+              ? ` (${metricTickSuffix.replace('&nbsp;', '')})`
+              : '';
             return (
               <YBWidget
-                key={type + idx}
+                key={idx}
                 noMargin
+                headerRight={
+                  metricKey === 'disk_usage' ? null : <YBPanelLegend data={legendData} />
+                }
                 headerLeft={
-                  metricKey.replace(/_/g, ' ').charAt(0).toUpperCase() +
-                  metricKey.replace(/_/g, ' ').slice(1)
+                  <div className="metric-title">
+                    <span>{metrics[type][metricKey].layout.title + measureUnit}</span>
+                    <i
+                      className={autoRefresh ? 'fa fa-pause' : 'fa fa-refresh'}
+                      title={
+                        autoRefresh
+                          ? 'Click to pause auto-refresh'
+                          : 'Click to enable auto-refresh'
+                      }
+                      onClick={handleToggleRefresh}
+                    />
+                  </div>
                 }
                 body={
                   <MetricsPanelOverview
                     metricKey={metricKey}
-                    metric={{
-                      data: [],
-                      layout: {
-                        xaxis: {},
-                        yaxis: {}
-                      }
-                    }}
+                    metric={metrics[type][metricKey]}
                     className={'metrics-panel-container'}
                   />
                 }
               />
             );
           }
-          return null;
-        })
-        .filter(Boolean);
-    }
-    let panelData = panelItem;
-    if (isEmptyArray(panelItem)) {
-      panelData = 'Error receiving response from Graph Server';
-    }
-    return panelData;
+          return (
+            <YBWidget
+              key={type + idx}
+              noMargin
+              headerLeft={
+                metricKey.replace(/_/g, ' ').charAt(0).toUpperCase() +
+                metricKey.replace(/_/g, ' ').slice(1)
+              }
+              body={
+                <MetricsPanelOverview
+                  metricKey={metricKey}
+                  metric={{
+                    data: [],
+                    layout: {
+                      xaxis: {},
+                      yaxis: {}
+                    }
+                  }}
+                  className={'metrics-panel-container'}
+                />
+              }
+            />
+          );
+        }
+        return null;
+      })
+      .filter(Boolean);
   }
+  let panelData = panelItem;
+  if (isEmptyArray(panelItem)) {
+    panelData = 'Error receiving response from Graph Server';
+  }
+  return panelData;
 }
+
+OverviewMetrics.propTypes = {
+  type: PropTypes.oneOf(Object.keys(panelTypes)).isRequired,
+  nodePrefixes: PropTypes.array
+};
+
+OverviewMetrics.defaultProps = {
+  nodePrefixes: []
+};
 
 export default OverviewMetrics;

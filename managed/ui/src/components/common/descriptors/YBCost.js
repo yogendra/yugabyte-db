@@ -7,7 +7,7 @@ import YBFormattedNumber from './YBFormattedNumber';
 
 import './stylesheets/YBCost.css';
 
-const YBCost = ({ value, multiplier }) => {
+export const YBCost = ({ value, multiplier }) => {
   let finalCost = value || 0;
   if (multiplier === 'day') {
     finalCost *= 24;
@@ -28,6 +28,3 @@ const YBCost = ({ value, multiplier }) => {
 YBCost.propTypes = {
   multiplier: PropTypes.oneOf(['day', 'month', 'hour']).isRequired
 };
-
-
-export default YBCost;

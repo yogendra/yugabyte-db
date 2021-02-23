@@ -5,7 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import { YBSelect, YBInputField } from '../../../common/forms/fields';
 import { Field } from 'redux-form';
 
-const InstanceTypeForRegion = ({ fields, zoneOptions, machineTypeOptions, formType, useHostname }) => {
+export const InstanceTypeForRegion = ({ fields, zoneOptions, machineTypeOptions, formType, useHostname }) => {
   if (fields.length === 0) {
     fields.push({});
   }
@@ -94,5 +94,3 @@ const InstanceTypeForRegion = ({ fields, zoneOptions, machineTypeOptions, formTy
     </div>
   );
 }
-
-export default InstanceTypeForRegion;

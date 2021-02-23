@@ -1,4 +1,9 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as YugawareLogs } from './YugawareLogs';
-export { default as YugawareLogsContainer } from './YugawareLogsContainer';
+import { YugawareLogs } from './YugawareLogs';
+import YugawareLogsContainer from './YugawareLogsContainer';
+
+export {
+  YugawareLogs,
+  YugawareLogsContainer
+}

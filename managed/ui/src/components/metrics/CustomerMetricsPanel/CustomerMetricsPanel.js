@@ -1,6 +1,6 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useEffect} from 'react';
 import { GraphPanelHeaderContainer, GraphPanelContainer } from '../../metrics';
 import PropTypes from 'prop-types';
 import { PanelGroup } from 'react-bootstrap';
@@ -75,33 +75,28 @@ const PanelBody = ({ origin, selectedUniverse, nodePrefixes, width, tableName })
   );
 };
 
-export default class CustomerMetricsPanel extends Component {
-  static propTypes = {
-    origin: PropTypes.oneOf(['customer', 'universe', 'table']).isRequired,
-    nodePrefixes: PropTypes.array,
-    width: PropTypes.number,
-    tableName: PropTypes.string
-  };
-
-  static defaultProps = {
-    nodePrefixes: [],
-    tableName: null,
-    width: null
-  };
-
-  componentDidMount() {
-    const {
-      customer: { currentCustomer }
-    } = this.props;
+export const CustomerMetricsPanel = (props) => {
+  const { currentCustomer, origin } = props;
+  useEffect(()=> {
     showOrRedirect(currentCustomer.data.features, 'menu.metrics');
-  }
+  }, []);
 
-  render() {
-    const { origin } = this.props;
-    return (
-      <GraphPanelHeaderContainer origin={origin}>
-        <PanelBody {...this.props} />
-      </GraphPanelHeaderContainer>
-    );
-  }
+  return (
+    <GraphPanelHeaderContainer origin={origin}>
+      <PanelBody {...props} />
+    </GraphPanelHeaderContainer>
+  );
 }
+
+CustomerMetricsPanel.propTypes = {
+  origin: PropTypes.oneOf(['customer', 'universe', 'table']).isRequired,
+  nodePrefixes: PropTypes.array,
+  width: PropTypes.number,
+  tableName: PropTypes.string
+};
+
+CustomerMetricsPanel.defaultProps = {
+  nodePrefixes: [],
+  tableName: null,
+  width: null
+};

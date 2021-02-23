@@ -8,7 +8,7 @@ import { isHidden } from '../../utils/LayoutUtils';
 import PropTypes from 'prop-types';
 import {useComponentDidUpdate} from "../../hooks/useComponentDidUpdate";
 
-const AuthenticatedComponent = ({
+export const AuthenticatedComponent = withRouter(({
   fetchSoftwareVersions,
   fetchTableColumnTypes,
   getEBSListItems,
@@ -117,9 +117,7 @@ const AuthenticatedComponent = ({
       {children}
     </div>
   );
-}
-
-export default withRouter(AuthenticatedComponent);
+})
 
 AuthenticatedComponent.childContextTypes = {
   prevPath: PropTypes.string

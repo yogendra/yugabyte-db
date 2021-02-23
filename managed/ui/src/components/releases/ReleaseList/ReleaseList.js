@@ -1,6 +1,6 @@
 // Copyright (c) YugaByte, Inc.
 
-import React, { Component } from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { DropdownButton } from 'react-bootstrap';
 
@@ -50,42 +50,41 @@ const sortVersion = (a, b) => {
   }
 };
 
-export default class ReleaseList extends Component {
-  static defaultProps = {
-    title: 'Releases'
-  };
-
-  state = {
-    searchResults: null,
-    searchTerm: ''
-  };
-
-  componentDidMount() {
-    this.props.getYugaByteReleases();
+export const ReleaseList = (
+  {
+    getYugaByteReleases, refreshYugaByteReleases,
+    releases,
+    title,
+    customer: { currentCustomer }
   }
+) =>{
+  const [searchResults, setSearchResults] = useState(null);
+  const [_searchTerm, setSearchTerm] = useState('')
 
-  refreshRelease = () => {
-    this.props.refreshYugaByteReleases();
-    this.props.getYugaByteReleases();
+  useEffect(() => {
+    getYugaByteReleases();
+  }, [])
+
+  const refreshRelease = () => {
+    refreshYugaByteReleases();
+    getYugaByteReleases();
   };
 
-  onModalSubmit = () => {
-    this.props.getYugaByteReleases();
+  const onModalSubmit = () => {
+    getYugaByteReleases();
   };
 
-  onSearchVersions = (term) => {
-    const { releases } = this.props;
+  const onSearchVersions = (term) => {
     if (!term) {
-      this.setState({ searchResults: null, searchTerm: '' });
+      setSearchTerm('');
+      setSearchResults(null);
     } else {
-      this.setState({
-        searchResults: Object.keys(releases.data).filter((x) => x.indexOf(term) > -1),
-        searchTerm: term
-      });
+      setSearchResults(Object.keys(releases.data).filter((x) => x.indexOf(term) > -1));
+      setSearchTerm(term);
     }
   };
 
-  formatReleaseState = (item) => {
+  const formatReleaseState = (item) => {
     switch (item) {
       case 'ACTIVE':
         return <div className="state-pill state-pill--success">{item}</div>;
@@ -96,171 +95,167 @@ export default class ReleaseList extends Component {
     }
   }
 
-  render() {
-    const {
-      releases,
-      title,
-      customer: { currentCustomer }
-    } = this.props;
-    const { searchTerm, searchResults } = this.state;
-    showOrRedirect(currentCustomer.data.features, 'main.releases');
 
-    if (getPromiseState(releases).isLoading() || getPromiseState(releases).isInit()) {
-      return <YBLoadingCircleIcon size="medium" />;
+  showOrRedirect(currentCustomer.data.features, 'main.releases');
+
+  if (getPromiseState(releases).isLoading() || getPromiseState(releases).isInit()) {
+    return <YBLoadingCircleIcon size="medium" />;
+  }
+  let releaseStrList = [];
+  if (searchResults != null) {
+    releaseStrList = searchResults;
+  } else if (releases.data) {
+    releaseStrList = Object.keys(releases.data).sort(sortVersion);
+  }
+  const releaseInfos = releaseStrList.map((version) => {
+    const releaseInfo = releases.data[version];
+    releaseInfo.version = version;
+    return releaseInfo;
+  });
+
+  const rowClassNameFormat = function (row, rowIdx) {
+    return 'td-column-' + row.state.toLowerCase();
+  };
+
+  const formatActionButtons = function (item, row) {
+    let allowedActions = null;
+    switch (item) {
+      case 'ACTIVE':
+        allowedActions = ['DISABLE', 'DELETE'];
+        break;
+      case 'DISABLED':
+        allowedActions = ['DELETE', 'ACTIVE'];
+        break;
+      default:
+        break;
     }
-    let releaseStrList = [];
-    if (searchResults != null) {
-      releaseStrList = searchResults;
-    } else if (releases.data) {
-      releaseStrList = Object.keys(releases.data).sort(sortVersion);
+    if (!allowedActions) {
+      return;
     }
-    const releaseInfos = releaseStrList.map((version) => {
-      const releaseInfo = releases.data[version];
-      releaseInfo.version = version;
-      return releaseInfo;
-    });
-
-    const rowClassNameFormat = function (row, rowIdx) {
-      return 'td-column-' + row.state.toLowerCase();
-    };
-    const self = this;
-
-    const formatActionButtons = function (item, row) {
-      let allowedActions = null;
-      switch (item) {
-        case 'ACTIVE':
-          allowedActions = ['DISABLE', 'DELETE'];
-          break;
-        case 'DISABLED':
-          allowedActions = ['DELETE', 'ACTIVE'];
-          break;
-        default:
-          break;
-      }
-      if (!allowedActions) {
-        return;
-      }
-
-      return (
-        <DropdownButton
-          className="btn btn-default"
-          title="Actions"
-          id="bg-nested-dropdown"
-          pullRight
-        >
-          {allowedActions.map((action, idx) => {
-            const actionType = action.toLowerCase() + '-release';
-            return (
-              <TableAction
-                key={action + '-' + idx}
-                currentRow={row}
-                actionType={actionType}
-                onModalSubmit={self.onModalSubmit}
-                disabled={!isAvailable(currentCustomer.data.features, 'universes.actions')}
-              />
-            );
-          })}
-        </DropdownButton>
-      );
-    };
 
     return (
-      <YBPanelItem
-        header={
-          <div>
-            <div className="pull-left">
-              <YBTextInput
-                placeHolder="Search versions"
-                value={searchTerm}
-                onValueChanged={this.onSearchVersions}
+      <DropdownButton
+        className="btn btn-default"
+        title="Actions"
+        id="bg-nested-dropdown"
+        pullRight
+      >
+        {allowedActions.map((action, idx) => {
+          const actionType = action.toLowerCase() + '-release';
+          return (
+            <TableAction
+              key={action + '-' + idx}
+              currentRow={row}
+              actionType={actionType}
+              onModalSubmit={onModalSubmit}
+              disabled={!isAvailable(currentCustomer.data.features, 'universes.actions')}
+            />
+          );
+        })}
+      </DropdownButton>
+    );
+  };
+
+  return (
+    <YBPanelItem
+      header={
+        <div>
+          <div className="pull-left">
+            <YBTextInput
+              placeHolder="Search versions"
+              value={_searchTerm}
+              onValueChanged={onSearchVersions}
+            />
+          </div>
+          <div className="pull-right">
+            <div className="release-list-action-btn-group">
+              <YBButton
+                btnText={'Refresh'}
+                btnIcon={'fa fa-refresh'}
+                btnClass={'btn btn-orange'}
+                onClick={refreshRelease}
+                disabled={!isAvailable(currentCustomer.data.features, 'universes.actions')}
+              />
+              <TableAction
+                className="table-action"
+                btnClass={'btn-default'}
+                actionType="import-release"
+                isMenuItem={false}
+                onSubmit={onModalSubmit}
+                disabled={!isAvailable(currentCustomer.data.features, 'universes.actions')}
               />
             </div>
-            <div className="pull-right">
-              <div className="release-list-action-btn-group">
-                <YBButton
-                  btnText={'Refresh'}
-                  btnIcon={'fa fa-refresh'}
-                  btnClass={'btn btn-orange'}
-                  onClick={this.refreshRelease}
-                  disabled={!isAvailable(currentCustomer.data.features, 'universes.actions')}
-                />
-                <TableAction
-                  className="table-action"
-                  btnClass={'btn-default'}
-                  actionType="import-release"
-                  isMenuItem={false}
-                  onSubmit={self.onModalSubmit}
-                  disabled={!isAvailable(currentCustomer.data.features, 'universes.actions')}
-                />
-              </div>
-            </div>
-            <h2 className="content-title">{title}</h2>
           </div>
-        }
-        body={
-          <BootstrapTable
-            data={releaseInfos}
-            className={'release-list-table'}
-            trClassName={rowClassNameFormat}
-            pagination={true}
+          <h2 className="content-title">{title}</h2>
+        </div>
+      }
+      body={
+        <BootstrapTable
+          data={releaseInfos}
+          className={'release-list-table'}
+          trClassName={rowClassNameFormat}
+          pagination={true}
+        >
+          <TableHeaderColumn
+            dataField="version"
+            isKey={true}
+            columnClassName="no-border name-column"
+            className="no-border"
+            width="120px"
           >
-            <TableHeaderColumn
-              dataField="version"
-              isKey={true}
-              columnClassName="no-border name-column"
-              className="no-border"
-              width="120px"
-            >
-              Version
-            </TableHeaderColumn>
-            <TableHeaderColumn
-              dataField="filePath"
-              tdStyle={{ whiteSpace: 'normal' }}
-              columnClassName="no-border name-column"
-              className="no-border"
-              width="550px"
-            >
-              File Path
-            </TableHeaderColumn>
-            <TableHeaderColumn
-              dataField="imageTag"
-              tdStyle={{ whiteSpace: 'normal' }}
-              columnClassName="no-border "
-              className="no-border"
-              width="120px"
-            >
-              Registry Path
-            </TableHeaderColumn>
-            <TableHeaderColumn
-              dataField="notes"
-              tdStyle={{ whiteSpace: 'normal' }}
-              columnClassName="no-border name-column"
-              className="no-border"
-            >
-              Release Notes
-            </TableHeaderColumn>
-            <TableHeaderColumn
-              dataField="state"
-              dataFormat={this.formatReleaseState}
-              columnClassName="no-border name-column"
-              className="no-border"
-              width="150px"
-              dataAlign="center"
-            >
-              State
-            </TableHeaderColumn>
-            <TableHeaderColumn
-              dataField="state"
-              dataFormat={formatActionButtons}
-              columnClassName={'yb-actions-cell'}
-              className="no-border"
-              width="120px"
-            >
-              Actions
-            </TableHeaderColumn>
-          </BootstrapTable>
-        }
-      />
-    );
-  }
+            Version
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="filePath"
+            tdStyle={{ whiteSpace: 'normal' }}
+            columnClassName="no-border name-column"
+            className="no-border"
+            width="550px"
+          >
+            File Path
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="imageTag"
+            tdStyle={{ whiteSpace: 'normal' }}
+            columnClassName="no-border "
+            className="no-border"
+            width="120px"
+          >
+            Registry Path
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="notes"
+            tdStyle={{ whiteSpace: 'normal' }}
+            columnClassName="no-border name-column"
+            className="no-border"
+          >
+            Release Notes
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="state"
+            dataFormat={formatReleaseState}
+            columnClassName="no-border name-column"
+            className="no-border"
+            width="150px"
+            dataAlign="center"
+          >
+            State
+          </TableHeaderColumn>
+          <TableHeaderColumn
+            dataField="state"
+            dataFormat={formatActionButtons}
+            columnClassName={'yb-actions-cell'}
+            className="no-border"
+            width="120px"
+          >
+            Actions
+          </TableHeaderColumn>
+        </BootstrapTable>
+      }
+    />
+  );
 }
+
+ReleaseList.defaultProps = {
+  title: 'Releases'
+};

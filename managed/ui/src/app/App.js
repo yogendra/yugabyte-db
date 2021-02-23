@@ -5,7 +5,5 @@ import 'bootstrap/dist/css/bootstrap.css';
 import './stylesheets/App.scss';
 import './../_style/fonts.css';
 
-const App = ({ children }) => (<div>{children}</div>);
-
-export default App;
+export const App = ({ children }) => (<div>{children}</div>);
 

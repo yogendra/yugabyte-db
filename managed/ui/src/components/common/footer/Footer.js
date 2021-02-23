@@ -9,7 +9,7 @@ import YBLogo from '../YBLogo/YBLogo';
 import * as moment from 'moment';
 import { getPromiseState } from '../../../utils/PromiseUtils';
 
-const Footer = ({ customer: { yugawareVersion } }) => {
+export const Footer = ({ customer: { yugawareVersion } }) => {
   const version = getPromiseState(yugawareVersion).isSuccess()
     ? yugawareVersion.data.version
     : null;
@@ -62,5 +62,3 @@ const Footer = ({ customer: { yugawareVersion } }) => {
     </footer>
   );
 }
-
-export default Footer;

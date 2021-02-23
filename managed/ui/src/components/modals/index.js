@@ -1,3 +1,7 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as YBConfirmModal } from './YBConfirmModal';
+import { YBConfirmModal } from './YBConfirmModal';
+
+export {
+  YBConfirmModal
+};

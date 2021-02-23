@@ -28,7 +28,7 @@ const ConfigFormTitle = ({ titleText, copyTextToForm }) => {
   );
 }
 
-const OnPremConfigJSON = ({ updateConfigJsonVal, configJsonVal, switchToWizardEntry, submitJson  }) => {
+export const OnPremConfigJSON = ({ updateConfigJsonVal, configJsonVal, switchToWizardEntry, submitJson  }) => {
 
   const sampleJsonPretty = JSON.stringify(sampleDataCenterConfig, null, 2);
 

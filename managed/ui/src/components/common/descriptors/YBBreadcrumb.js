@@ -3,7 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const YBBreadcrumb = ({ children, ...rest }) => {
+export const YBBreadcrumb = ({ children, ...rest }) => {
   return (
     <span>
       <Link {...rest}>{children}</Link>
@@ -11,5 +11,3 @@ const YBBreadcrumb = ({ children, ...rest }) => {
     </span>
   );
 }
-
-export default YBBreadcrumb;

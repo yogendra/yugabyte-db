@@ -1,20 +1,40 @@
 // Copyright (c) YugaByte, Inc.
 
-export { default as GraphPanel } from './GraphPanel/GraphPanel';
-export { default as GraphPanelHeader } from './GraphPanelHeader/GraphPanelHeader';
-export { default as MetricsPanel } from './MetricsPanel/MetricsPanel';
-export { default as OverviewMetrics } from './OverviewMetrics/OverviewMetrics';
-export { default as OverviewMetricsContainer } from './OverviewMetrics/OverviewMetricsContainer';
-export { default as MetricsPanelOverview } from './MetricsPanel/MetricsPanelOverview';
-export { default as DiskUsagePanel } from './MetricsPanel/DiskUsagePanel';
-export { default as CpuUsagePanel } from './MetricsPanel/CpuUsagePanel';
-export { default as CustomerMetricsPanel } from './CustomerMetricsPanel/CustomerMetricsPanel';
-export { default as CustomerMetricsPanelContainer } from './CustomerMetricsPanel/CustomerMetricsPanelContainer';
-export { DEFAULT_GRAPH_FILTER } from './GraphPanelHeader/GraphPanelHeader';
-export { default as UniverseReadWriteMetrics } from './UniverseReadWriteMetrics/UniverseReadWriteMetrics';
-export { default as GraphPanelContainer } from './GraphPanel/GraphPanelContainer';
-export { default as GraphPanelHeaderContainer } from './GraphPanelHeader/GraphPanelHeaderContainer';
-export { default as StandaloneMetricsPanel } from './StandaloneMetricsPanel/StandaloneMetricsPanel';
-export { default as StandaloneMetricsPanelContainer } from './StandaloneMetricsPanel/StandaloneMetricsPanelContainer';
+import { GraphPanel } from './GraphPanel/GraphPanel';
+import GraphPanelHeader from './GraphPanelHeader/GraphPanelHeader';
+import { MetricsPanel } from './MetricsPanel/MetricsPanel';
+import { OverviewMetrics } from './OverviewMetrics/OverviewMetrics';
+import OverviewMetricsContainer from './OverviewMetrics/OverviewMetricsContainer';
+import { MetricsPanelOverview } from './MetricsPanel/MetricsPanelOverview';
+import { DiskUsagePanel } from './MetricsPanel/DiskUsagePanel';
+import { CpuUsagePanel } from './MetricsPanel/CpuUsagePanel';
+import { CustomerMetricsPanel } from './CustomerMetricsPanel/CustomerMetricsPanel';
+import CustomerMetricsPanelContainer from './CustomerMetricsPanel/CustomerMetricsPanelContainer';
+import { DEFAULT_GRAPH_FILTER } from './GraphPanelHeader/GraphPanelHeader';
+import { UniverseReadWriteMetrics } from './UniverseReadWriteMetrics/UniverseReadWriteMetrics';
+import GraphPanelContainer from './GraphPanel/GraphPanelContainer';
+import GraphPanelHeaderContainer from './GraphPanelHeader/GraphPanelHeaderContainer';
+import { StandaloneMetricsPanel } from './StandaloneMetricsPanel/StandaloneMetricsPanel';
+import StandaloneMetricsPanelContainer from './StandaloneMetricsPanel/StandaloneMetricsPanelContainer';
+import { Graph } from './Graph/Graph';
 
-export { default as Graph } from './Graph/Graph';
+
+export {
+  GraphPanel,
+  GraphPanelHeader,
+  MetricsPanel,
+  OverviewMetrics,
+  OverviewMetricsContainer,
+  MetricsPanelOverview,
+  DiskUsagePanel,
+  CpuUsagePanel,
+  CustomerMetricsPanel,
+  CustomerMetricsPanelContainer,
+  UniverseReadWriteMetrics,
+  GraphPanelContainer,
+  GraphPanelHeaderContainer,
+  StandaloneMetricsPanel,
+  StandaloneMetricsPanelContainer,
+  Graph,
+  DEFAULT_GRAPH_FILTER
+}
