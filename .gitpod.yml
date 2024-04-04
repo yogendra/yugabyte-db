@@ -6,6 +6,6 @@
 image:
     file: .gitpod.Dockerfile
 
-checkoutLocation: /home/gitpod/code
+checkoutLocation: /home/gitpod/code/yugabyte-db
 
 
