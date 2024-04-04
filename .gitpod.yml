@@ -1,3 +1,4 @@
+
 image:
     file: .gitpod.Dockerfile
 
@@ -14,3 +15,18 @@ ports:
 - name: java-web
   port: 8080
   visibility: private
+
+vscode:
+  extensions:
+    - Dart-Code.dart-code
+    - tamasfe.even-better-toml
+    - ms-azuretools.vscode-docker
+    - dbaeumer.vscode-eslint
+    - Dart-Code.flutter
+    - redhat.vscode-yaml
+    - GitHub.vscode-pull-request-github
+    - eamodio.gitlens
+    - shd101wyy.markdown-preview-enhanced
+    - DavidAnson.vscode-markdownlint
+    - chrischinchilla.vale-vscode
+    - Tyriar.sort-lines
