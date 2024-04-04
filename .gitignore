@@ -126,3 +126,5 @@ managed/src/main/java/com/yugabyte/yw/common/operator/io/*
 
 # jenv local version
 **/.java-version
+CMakeCache.txt
+CMakeFiles/
